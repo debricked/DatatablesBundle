@@ -11,13 +11,13 @@
 
 namespace Sg\DatatablesBundle\Tests;
 
+use Doctrine\ORM\EntityManager;
 use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
-
+use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Doctrine\ORM\EntityManager;
 use Twig_Environment;
 
 /**
@@ -25,8 +25,9 @@ use Twig_Environment;
  *
  * @package Sg\DatatablesBundle\Tests
  */
-class DatatableTest extends \PHPUnit_Framework_TestCase
+class DatatableTest extends TestCase
 {
+
     /**
      * testCreate.
      */
@@ -34,16 +35,11 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
     {
         $tableClass = PostDatatable::class;
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $authorizationChecker = $this->getMock(AuthorizationCheckerInterface::class);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $securityToken = $this->getMock(TokenStorageInterface::class);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $translator = $this->getMock(TranslatorInterface::class);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $router = $this->getMock(RouterInterface::class);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $twig = $this->getMock(Twig_Environment::class);
+        $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $securityToken = $this->createMock(TokenStorageInterface::class);
+        $translator = $this->createMock(TranslatorInterface::class);
+        $router = $this->createMock(RouterInterface::class);
+        $twig = $this->createMock(Twig_Environment::class);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $em = $this->getMockBuilder(EntityManager::class)
@@ -87,4 +83,5 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
 
         return $mock;
     }
+
 }
