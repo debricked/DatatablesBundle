@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Tests\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Tests\Entity\Post;
 
 /**
  * Class PostDatatable
@@ -50,7 +51,7 @@ class PostDatatable extends AbstractDatatable
      */
     public function getEntity()
     {
-        return 'AppBundle\Entity\Post';
+        return Post::class;
     }
 
     /**

@@ -1,0 +1,6 @@
+services:
+    Sg\DatatablesBundle\Tests\Datatables\PostDatatable:
+        parent: sg_datatables.datatable.abstract
+        public: true
+        tags:
+            - sg.datatable

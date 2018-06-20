@@ -79,11 +79,6 @@ class DatatableTwigExtension extends Twig_Extension
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new Twig_SimpleFunction(
-                'sg_datatables_render_js',
-                array($this, 'datatablesRenderJs'),
-                array('is_safe' => array('html'), 'needs_environment' => true)
-            ),
-            new Twig_SimpleFunction(
                 'sg_datatables_render_filter',
                 array($this, 'datatablesRenderFilter'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
@@ -140,24 +135,6 @@ class DatatableTwigExtension extends Twig_Extension
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable_html.html.twig',
-            array(
-                'sg_datatables_view' => $datatable,
-            )
-        );
-    }
-
-    /**
-     * Renders the js template.
-     *
-     * @param Twig_Environment   $twig
-     * @param DatatableInterface $datatable
-     *
-     * @return string
-     */
-    public function datatablesRenderJs(Twig_Environment $twig, DatatableInterface $datatable)
-    {
-        return $twig->render(
-            'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
                 'sg_datatables_view' => $datatable,
             )

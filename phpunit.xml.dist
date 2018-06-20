@@ -8,6 +8,10 @@
         </testsuite>
     </testsuites>
 
+    <php>
+        <server name="KERNEL_CLASS" value="Sg\DatatablesBundle\Tests\Application\Kernel"/>
+    </php>
+
     <filter>
         <whitelist>
             <directory>./</directory>

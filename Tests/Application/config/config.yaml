@@ -1,0 +1,33 @@
+imports:
+    - { resource: services.yaml }
+
+parameters:
+    kernel.secret: ThisIsNotVerySecret
+    request_listener.http_port: 8000
+    request_listener.https_port: 8001
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing.yaml"
+        strict_requirements: ~
+    templating:
+        engines: twig
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     "sqlite:///%kernel.root_dir%/var/app.db"
+    orm:
+        auto_mapping: true
+        mappings:
+            test_mapping:
+                type: annotation
+                prefix: Sg\DatatablesBundle\Tests\Entity\
+                dir: '%kernel.root_dir%/../Entity/'
+                is_bundle: false
+
+security:
+    firewalls:
+        main:
+            pattern: ^/
+            anonymous: true

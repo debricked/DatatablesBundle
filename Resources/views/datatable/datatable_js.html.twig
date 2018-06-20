@@ -6,87 +6,86 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-<script type="text/javascript">
 
-    $(document).ready(function () {
+module.exports = {
+    initialiseDatatable() {
 
-        var selector = "#sg-datatables-{{ sg_datatables_view.name }}";
-        var oTable;
+    const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
+    let oTable;
 
-        var defaults = {
-        };
+    let defaults = {
+    };
 
-        var language = {
-            {% include 'SgDatatablesBundle:datatable:language.html.twig' %}
-        };
+    let language = {
+    {% include 'SgDatatablesBundle:datatable:language.html.twig' %}
+    };
 
-        var ajax = {
-            {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
-        };
+    let ajax = {
+    {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
+    };
 
-        var options = {
-            {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
-        };
+    let options = {
+    {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
+    };
 
-        var features = {
-            {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
-        };
+    let features = {
+    {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
+    };
 
-        var callbacks = {
-            {% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
-        };
+    let callbacks = {
+    {% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
+    };
 
-        var extensions = {
-            {% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
-        };
+    let extensions = {
+    {% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
+    };
 
-        var columns = {
-            {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
-        };
+    let columns = {
+    {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
+    };
 
-        var initialSearch = {
-            {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
-        };
+    let initialSearch = {
+    {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
+    };
 
-        function postCreateDatatable(pipeline) {
-            {% for column in sg_datatables_view.columnBuilder.columns %}
-                {% if column.renderPostCreateDatatableJsContent is not null %}
-                    {{ column.renderPostCreateDatatableJsContent|raw }}
-                {% endif %}
-            {% endfor %}
-        }
-
-        function createDatatable() {
-            $.extend(defaults, language);
-            $.extend(defaults, ajax);
-            $.extend(defaults, options);
-            $.extend(defaults, features);
-            $.extend(defaults, callbacks);
-            $.extend(defaults, extensions);
-            $.extend(defaults, columns);
-            $.extend(defaults, initialSearch);
-
-            if (!$.fn.dataTable.isDataTable(selector)) {
-                $(selector)
-                    {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
-                ;
-            
-                oTable = $(selector)
-                    .DataTable(defaults)
-                        .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline}}) })
-                    ;
-
-                {% if true == sg_datatables_view.options.individualFiltering %}
-                    {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
-                {% endif %}
-            }
-        }
-
-        createDatatable();
-
-        {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
-            {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
+    function postCreateDatatable(pipeline) {
+    {% for column in sg_datatables_view.columnBuilder.columns %}
+        {% if column.renderPostCreateDatatableJsContent is not null %}
+            {{ column.renderPostCreateDatatableJsContent|raw }}
         {% endif %}
-    });
+    {% endfor %}
+    }
 
-</script>
+    function createDatatable() {
+    $.extend(defaults, language);
+    $.extend(defaults, ajax);
+    $.extend(defaults, options);
+    $.extend(defaults, features);
+    $.extend(defaults, callbacks);
+    $.extend(defaults, extensions);
+    $.extend(defaults, columns);
+    $.extend(defaults, initialSearch);
+
+    if (!$.fn.dataTable.isDataTable(selector)) {
+    $(selector)
+    {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+    ;
+
+    oTable = $(selector)
+    .DataTable(defaults)
+    .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}) })
+    ;
+
+    {% if true == sg_datatables_view.options.individualFiltering %}
+        {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+    {% endif %}
+    }
+    }
+
+    createDatatable();
+
+    {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
+        {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
+    {% endif %}
+}
+};
