@@ -7,56 +7,67 @@
  # file that was distributed with this source code.
  #}
 
+/* global $ */
+
+"use strict";
+
+const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
+let oTable;
+
+let defaults = {
+};
+
+let language = {
+{% include 'SgDatatablesBundle:datatable:language.html.twig' %}
+};
+
+let ajax = {
+{% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
+};
+
+let options = {
+{% include 'SgDatatablesBundle:datatable:options.html.twig' %}
+};
+
+let features = {
+{% include 'SgDatatablesBundle:datatable:features.html.twig' %}
+};
+
+let callbacks = {
+{% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
+};
+
+let extensions = {
+{% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
+};
+
+let columns = {
+{% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
+};
+
+let initialSearch = {
+{% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
+};
+
 module.exports = {
-    initialiseDatatable() {
 
-    const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
-    let oTable;
+    drawTable() {
+        {% if sg_datatables_view.ajax.pipeline > 0 %}
+            oTable.clearPipeline().draw();
+        {% else %}
+            oTable.draw();
+        {% endif %}
+    },
 
-    let defaults = {
-    };
-
-    let language = {
-    {% include 'SgDatatablesBundle:datatable:language.html.twig' %}
-    };
-
-    let ajax = {
-    {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
-    };
-
-    let options = {
-    {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
-    };
-
-    let features = {
-    {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
-    };
-
-    let callbacks = {
-    {% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
-    };
-
-    let extensions = {
-    {% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
-    };
-
-    let columns = {
-    {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
-    };
-
-    let initialSearch = {
-    {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
-    };
-
-    function postCreateDatatable(pipeline) {
+    postCreateDatatable(pipeline) {
     {% for column in sg_datatables_view.columnBuilder.columns %}
         {% if column.renderPostCreateDatatableJsContent is not null %}
             {{ column.renderPostCreateDatatableJsContent|raw }}
         {% endif %}
     {% endfor %}
-    }
+    },
 
-    function createDatatable() {
+    createDatatable() {
     $.extend(defaults, language);
     $.extend(defaults, ajax);
     $.extend(defaults, options);
@@ -73,7 +84,7 @@ module.exports = {
 
     oTable = $(selector)
     .DataTable(defaults)
-    .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}) })
+    .on('draw.dt', function() { this.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
     ;
 
     {% if true == sg_datatables_view.options.individualFiltering %}
@@ -82,10 +93,8 @@ module.exports = {
     }
     }
 
-    createDatatable();
-
     {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
         {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
     {% endif %}
-}
+
 };

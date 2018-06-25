@@ -25,15 +25,25 @@ class GenerateDatatableJavascriptsCommandTest extends KernelTestCase
 
         $command = $application->find(GenerateDatatableJavascriptsCommand::getDefaultName());
         $commandTester = new CommandTester($command);
+        $outputDir = 'Tests/assets/js/Datatable';
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                'output' => 'Tests/assets/js/Datatable',
+                'output' => $outputDir,
             ]
         );
 
         $output = $commandTester->getDisplay();
         $this->assertContains('Successfully generated javascript files for 1 datatable(s)', $output);
+        $fileUri = $kernel->getRootDir().'/../../'.$outputDir.'/post_datatable.js';
+        $this->assertFileExists($fileUri);
+        $fileData = \file_get_contents($fileUri);
+        $this->assertContains(
+            '"columns": [
+            {
+                                                                                "title": "Id",',
+            $fileData
+        );
     }
 
 }

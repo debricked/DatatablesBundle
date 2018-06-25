@@ -70,6 +70,7 @@ class GenerateDatatableJavascriptsCommand extends Command
         $filesystem = new Filesystem();
 
         foreach ($this->datatables as $datatable) {
+            $datatable->buildDatatable();
             try {
                 $datatableJavascript = $this->renderingEngine->render(
                     'SgDatatablesBundle:datatable:datatable_js.html.twig',
