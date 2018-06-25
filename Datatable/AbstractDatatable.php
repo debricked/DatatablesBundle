@@ -301,8 +301,9 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
-    public function setRouterLocale(string $locale)
+    public function setLocale(string $locale)
     {
+        $this->translator->setLocale($locale);
         $routingContext = $this->router->getContext();
         $routingContext->setParameter('_locale', $locale);
         $this->router->setContext($routingContext);

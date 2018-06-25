@@ -127,9 +127,9 @@ interface DatatableInterface
     public function getName();
 
     /**
-     * Sets given locale to routing context.
+     * Sets given locale to routing context and translator.
      *
      * @param string $locale
      */
-    public function setRouterLocale(string $locale);
+    public function setLocale(string $locale);
 }

@@ -78,7 +78,7 @@ class GenerateDatatableJavascriptsCommand extends Command
 
         foreach ($this->datatables as $datatable) {
             foreach ($this->locales as $locale) {
-                $datatable->setRouterLocale($locale);
+                $datatable->setLocale($locale);
                 $datatable->buildDatatable();
                 try {
                     $datatableJavascript = $this->renderingEngine->render(
