@@ -54,7 +54,8 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end()
+                ->end() // datatable
+                ->scalarNode('locales')->isRequired()->end()
             ->end()
         ;
     }

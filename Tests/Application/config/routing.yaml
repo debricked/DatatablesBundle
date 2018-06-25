@@ -1,0 +1,4 @@
+app.datatable.post:
+    path: /{_locale}/post/results
+    defaults:
+        _controller: AppBundle:Datatable/Post:results

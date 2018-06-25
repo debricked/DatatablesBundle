@@ -28,7 +28,7 @@ class PostDatatable extends AbstractDatatable
     public function buildDatatable(array $options = array())
     {
         $this->ajax->set(array(
-            'url' => '',
+            'url' => $this->router->generate('app.datatable.post'),
             'type' => 'GET',
         ));
 

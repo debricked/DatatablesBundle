@@ -26,6 +26,9 @@ doctrine:
                 dir: '%kernel.root_dir%/../Entity/'
                 is_bundle: false
 
+sg_datatables:
+    locales: 'en|sv'
+
 security:
     firewalls:
         main:
