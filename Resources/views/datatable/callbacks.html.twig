@@ -6,6 +6,7 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{
 {% if sg_datatables_view.callbacks.createdRow is not same as(null) %}
     {% if sg_datatables_view.callbacks.createdRow['vars'] is defined %}
         {% set vars = sg_datatables_view.callbacks.createdRow['vars'] %}
@@ -118,3 +119,4 @@
     {% endif %}
     "stateSaveParams": {% include sg_datatables_view.callbacks.stateSaveParams['template'] with vars %},
 {% endif %}
+}

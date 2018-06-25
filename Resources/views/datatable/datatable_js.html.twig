@@ -17,37 +17,21 @@ let oTable;
 let defaults = {
 };
 
-let language = {
-{% include 'SgDatatablesBundle:datatable:language.html.twig' %}
-};
+let language;
 
-let ajax = {
-{% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
-};
+let ajax;
 
-let options = {
-{% include 'SgDatatablesBundle:datatable:options.html.twig' %}
-};
+let options;
 
-let features = {
-{% include 'SgDatatablesBundle:datatable:features.html.twig' %}
-};
+let features;
 
-let callbacks = {
-{% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
-};
+let callbacks;
 
-let extensions = {
-{% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
-};
+let extensions;
 
-let columns = {
-{% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
-};
+let columns;
 
-let initialSearch = {
-{% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
-};
+let initialSearch;
 
 let exports = module.exports = {
 
@@ -68,29 +52,38 @@ let exports = module.exports = {
     },
 
     createDatatable() {
-    $.extend(defaults, language);
-    $.extend(defaults, ajax);
-    $.extend(defaults, options);
-    $.extend(defaults, features);
-    $.extend(defaults, callbacks);
-    $.extend(defaults, extensions);
-    $.extend(defaults, columns);
-    $.extend(defaults, initialSearch);
+        language = JSON.parse($("#{{ sg_datatables_view.name }}-language").innerText);
+        ajax = JSON.parse($("#{{ sg_datatables_view.name }}-ajax").innerText);
+        options = JSON.parse($("#{{ sg_datatables_view.name }}-options").innerText);
+        features = JSON.parse($("#{{ sg_datatables_view.name }}-features").innerText);
+        callbacks = JSON.parse($("#{{ sg_datatables_view.name }}-callbacks").innerText);
+        extensions = JSON.parse($("#{{ sg_datatables_view.name }}-extensions").innerText);
+        columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").innerText);
+        initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").innerText);
 
-    if (!$.fn.dataTable.isDataTable(selector)) {
-    $(selector)
-    {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
-    ;
+        $.extend(defaults, language);
+        $.extend(defaults, ajax);
+        $.extend(defaults, options);
+        $.extend(defaults, features);
+        $.extend(defaults, callbacks);
+        $.extend(defaults, extensions);
+        $.extend(defaults, columns);
+        $.extend(defaults, initialSearch);
 
-    oTable = $(selector)
-    .DataTable(defaults)
-    .on('draw.dt', function() { exports.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
-    ;
+        if (!$.fn.dataTable.isDataTable(selector)) {
+            $(selector)
+            {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+            ;
 
-    {% if true == sg_datatables_view.options.individualFiltering %}
-        {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
-    {% endif %}
-    }
+            oTable = $(selector)
+            .DataTable(defaults)
+            .on('draw.dt', function() { exports.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
+            ;
+
+            {% if true == sg_datatables_view.options.individualFiltering %}
+                {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+            {% endif %}
+        }
     }
 
     {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}

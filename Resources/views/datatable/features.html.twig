@@ -6,6 +6,7 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{
 {% if sg_datatables_view.features.autoWidth is not same as(null) %}
     "autoWidth": {{ sg_datatables_view.features.autoWidth|sg_datatables_bool_var }},
 {% endif %}
@@ -39,3 +40,4 @@
 {% if sg_datatables_view.features.stateSave is not same as(null) %}
     "stateSave": {{ sg_datatables_view.features.stateSave|sg_datatables_bool_var }},
 {% endif %}
+}

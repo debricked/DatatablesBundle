@@ -35,19 +35,10 @@ class GenerateDatatableJavascriptsCommandTest extends KernelTestCase
 
         $output = $commandTester->getDisplay();
         $this->assertContains('Successfully generated javascript files for 1 datatable(s)', $output);
-        foreach (\explode('|', $kernel->getContainer()->getParameter('sg_datatables.locales')) as $locale)
-        {
-            $fileUri = $kernel->getRootDir().'/../../'.$outputDir.'/post_datatable_' . $locale . '.js';
-            $this->assertFileExists($fileUri);
-            $fileData = \file_get_contents($fileUri);
-            $this->assertContains(
-                '"columns": [
-            {
-                                                                                "title": "Id",',
-                $fileData
-            );
-            $this->assertContains('"url": "/' . $locale . '/post/results"', $fileData);
-        }
+        $postDatatableFileUri = $kernel->getRootDir().'/../../'.$outputDir.'/post_datatable.js';
+        $this->assertFileExists($postDatatableFileUri);
+        $postDatatableFileData = \file_get_contents($postDatatableFileUri);
+        $this->assertContains('"#post_datatable-language"', $postDatatableFileData);
     }
 
 }

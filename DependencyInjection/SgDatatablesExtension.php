@@ -38,7 +38,6 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
-        $container->setParameter('sg_datatables.locales', $config['locales']);
         $container->registerForAutoconfiguration(DatatableInterface::class)->addTag('sg.datatable');
     }
 

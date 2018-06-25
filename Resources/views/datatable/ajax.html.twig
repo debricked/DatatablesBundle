@@ -6,6 +6,7 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{
 {% set ajax_vars %}
     {% if sg_datatables_view.ajax.url is not same as(null) %}
         "url": "{{ sg_datatables_view.ajax.url|raw }}",
@@ -27,6 +28,4 @@
         {{ ajax_vars }}
     },
 {% endif %}
-
-
-
+}

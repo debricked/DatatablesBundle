@@ -1,3 +1,4 @@
+{
 {% if sg_datatables_view.language.language is same as(null) %}
     {% if sg_datatables_view.language.cdnLanguageByLocale is same as(true) %}
         "language": {
@@ -13,3 +14,4 @@
     "language":
         {% include 'SgDatatablesBundle:i18n:' ~ sg_datatables_view.language.language|slice(0, 2) ~ '.json.twig' %}
 {% endif %}
+}
