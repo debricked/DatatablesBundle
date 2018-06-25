@@ -7,34 +7,36 @@
  # file that was distributed with this source code.
  #}
 
+{% set replacePattern = {"\n": "", "\r": "", "\t": ""} %}
+
 <div id="{{ sg_datatables_view.name }}-language" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:language.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:language.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-ajax" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:ajax.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:ajax.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-options" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:options.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:options.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-features" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:features.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:features.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-callbacks" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:callbacks.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:callbacks.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-extensions" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:extensions.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:extensions.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-columns" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:columns.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:columns.html.twig')|replace(replacePattern)|raw }}
 </div>
 
 <div id="{{ sg_datatables_view.name }}-initial-search" class="hidden">
-    {{ include('SgDatatablesBundle:datatable:initial_search.html.twig')|json_encode|raw }}
+    {{ include('SgDatatablesBundle:datatable:initial_search.html.twig')|replace(replacePattern)|raw }}
 </div>

@@ -9,7 +9,7 @@
 {
 "columns": [
     {% for column in sg_datatables_view.columnBuilder.columns %}
-        {% include column.getOptionsTemplate %}
+        {%- include column.getOptionsTemplate -%}{% if loop.last == false %},{% endif %}
     {% endfor %}
 ]
 }
