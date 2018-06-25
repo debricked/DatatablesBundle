@@ -77,14 +77,14 @@ class GenerateDatatableJavascriptsCommand extends Command
         $filesystem = new Filesystem();
 
         foreach ($this->datatables as $datatable) {
-            foreach ($this->locales as $locale)
-            {
+            foreach ($this->locales as $locale) {
                 $datatable->setRouterLocale($locale);
                 $datatable->buildDatatable();
                 try {
                     $datatableJavascript = $this->renderingEngine->render(
                         'SgDatatablesBundle:datatable:datatable_js.html.twig',
                         [
+                            'locale' => $locale,
                             'sg_datatables_view' => $datatable,
                         ]
                     );
@@ -94,9 +94,10 @@ class GenerateDatatableJavascriptsCommand extends Command
                     return 1;
                 }
                 try {
-                    $filename = $this->projectDir.'/'.$input->getArgument(static::ARGUMENT_OUTPUT).'/'.$datatable->getName().'_'.$locale.'.js';
-                    if ($filesystem->exists($filename) === true)
-                    {
+                    $filename = $this->projectDir.'/'.$input->getArgument(
+                            static::ARGUMENT_OUTPUT
+                        ).'/'.$datatable->getName().'_'.$locale.'.js';
+                    if ($filesystem->exists($filename) === true) {
                         $filesystem->remove($filename);
                     }
                     $filesystem->dumpFile(
@@ -104,7 +105,9 @@ class GenerateDatatableJavascriptsCommand extends Command
                         $datatableJavascript
                     );
                 } catch (IOException $exception) {
-                    $output->writeln('<error>Failed to save datatable"'.$datatable->getName().'"\'s javascript</error>');
+                    $output->writeln(
+                        '<error>Failed to save datatable"'.$datatable->getName().'"\'s javascript</error>'
+                    );
 
                     return 2;
                 }
