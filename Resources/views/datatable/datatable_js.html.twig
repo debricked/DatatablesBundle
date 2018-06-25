@@ -49,7 +49,7 @@ let initialSearch = {
 {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
 };
 
-module.exports = {
+let exports = module.exports = {
 
     drawTable() {
         {% if sg_datatables_view.ajax.pipeline > 0 %}
@@ -84,7 +84,7 @@ module.exports = {
 
     oTable = $(selector)
     .DataTable(defaults)
-    .on('draw.dt', function() { this.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
+    .on('draw.dt', function() { exports.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
     ;
 
     {% if true == sg_datatables_view.options.individualFiltering %}
