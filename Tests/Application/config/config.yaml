@@ -30,6 +30,13 @@ sg_datatables:
     locales: 'en|sv'
 
 security:
+    providers:
+        in_memory:
+            memory:
+                users:
+                    admin:
+                        password: admin
+                        roles: 'ROLE_ADMIN'
     firewalls:
         main:
             pattern: ^/
