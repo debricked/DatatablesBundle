@@ -1,5 +1,5 @@
 {
-    "name": "sweoggy/datatablesbundle",
+    "name": "debricked/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
     "keywords": [
@@ -14,7 +14,7 @@
         "datagrid",
         "pagination"
     ],
-    "homepage": "https://github.com/sweoggy/DatatablesBundle",
+    "homepage": "https://github.com/debricked/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
