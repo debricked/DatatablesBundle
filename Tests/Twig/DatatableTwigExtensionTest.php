@@ -38,7 +38,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
         $container = $this->bootKernel()->getContainer();
         $this->datatableTwigExtension = $container->get('test.sg_datatables.twig.extension');
         $this->postDatatable = $container->get(PostDatatable::class);
-        $this->requestStack = static::$container->get('request_stack');
+        $this->requestStack = $container->get('request_stack');
         $this->twig = $container->get('twig');
     }
 
