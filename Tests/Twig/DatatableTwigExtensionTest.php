@@ -7,6 +7,7 @@ use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
 use Sg\DatatablesBundle\Twig\DatatableTwigExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DatatableTwigExtensionTest extends KernelTestCase
 {
@@ -22,6 +23,11 @@ class DatatableTwigExtensionTest extends KernelTestCase
     private $postDatatable;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @var \Twig_Environment
      */
     private $twig;
@@ -32,12 +38,13 @@ class DatatableTwigExtensionTest extends KernelTestCase
         $container = $this->bootKernel()->getContainer();
         $this->datatableTwigExtension = $container->get('test.sg_datatables.twig.extension');
         $this->postDatatable = $container->get(PostDatatable::class);
+        $this->requestStack = static::$container->get('request_stack');
         $this->twig = $container->get('twig');
     }
 
     public function testDatatablesRenderJsValues()
     {
-        static::$container->get('request_stack')->push(Request::createFromGlobals());
+        $this->requestStack->push(Request::createFromGlobals());
         $this->postDatatable->setLocale('en');
         $this->postDatatable->buildDatatable();
         /* @noinspection PhpUnhandledExceptionInspection */
@@ -59,6 +66,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
         parent::tearDown();
         $this->datatableTwigExtension = null;
         $this->postDatatable = null;
+        $this->requestStack = null;
         $this->twig = null;
     }
 
