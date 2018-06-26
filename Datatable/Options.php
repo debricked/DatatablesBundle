@@ -438,10 +438,6 @@ class Options
      */
     public function getOrder()
     {
-        if (is_array($this->order)) {
-            return $this->optionToJson($this->order);
-        }
-
         return $this->order;
     }
 

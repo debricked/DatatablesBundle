@@ -47,9 +47,11 @@ class DatatableTwigExtensionTest extends KernelTestCase
         $this->assertContains('[{"title":"Id","searchable":true,"visible":true,"orderable":true,"data":"id"},{"title":"Title","searchable":true,"visible":true,"orderable":true,"data":"title"},{"title":"datatables.actions.title","searchable":false,"visible":true,"orderable":false,"data":2}]', $renderedContent);
 
         $this->postDatatable->getAjax()->setPipeline(1);
+        $this->postDatatable->getOptions()->setOrder([[0, 'asc']]);
         /* @noinspection PhpUnhandledExceptionInspection */
         $modifiedRenderedContent = $this->datatableTwigExtension->datatablesRenderJsValues($this->twig, $this->postDatatable);
         $this->assertContains('{"serverSide":true,"ajax":"$.fn.dataTable.pipeline({\u0022url\u0022:\u0022\/en\/post\/results\u0022,\u0022type\u0022:\u0022GET\u0022,\u0022pages\u0022:1})"}', $modifiedRenderedContent);
+        $this->assertContains('{"order":[[0,"asc"]]}', $modifiedRenderedContent);
     }
 
     public function tearDown()
