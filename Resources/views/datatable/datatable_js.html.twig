@@ -52,14 +52,14 @@ let exports = module.exports = {
     },
 
     createDatatable() {
-        language = JSON.parse($("#{{ sg_datatables_view.name }}-language").innerText);
-        ajax = JSON.parse($("#{{ sg_datatables_view.name }}-ajax").innerText);
-        options = JSON.parse($("#{{ sg_datatables_view.name }}-options").innerText);
-        features = JSON.parse($("#{{ sg_datatables_view.name }}-features").innerText);
-        callbacks = JSON.parse($("#{{ sg_datatables_view.name }}-callbacks").innerText);
-        extensions = JSON.parse($("#{{ sg_datatables_view.name }}-extensions").innerText);
-        columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").innerText);
-        initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").innerText);
+        language = JSON.parse($("#{{ sg_datatables_view.name }}-language").text());
+        ajax = JSON.parse($("#{{ sg_datatables_view.name }}-ajax").text());
+        options = JSON.parse($("#{{ sg_datatables_view.name }}-options").text());
+        features = JSON.parse($("#{{ sg_datatables_view.name }}-features").text());
+        callbacks = JSON.parse($("#{{ sg_datatables_view.name }}-callbacks").text());
+        extensions = JSON.parse($("#{{ sg_datatables_view.name }}-extensions").text());
+        columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").text());
+        initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").text());
 
         $.extend(defaults, language);
         $.extend(defaults, ajax);

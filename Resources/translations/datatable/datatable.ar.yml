@@ -1,0 +1,21 @@
+##
+# Arabic translation
+#  @name Arabic
+#  @anchor Arabic
+#  @author Ossama Khayat
+##
+sg:
+    datatables:
+        sInfo: "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل"
+        sInfoEmpty: "يعرض 0 إلى 0 من أصل 0 سجل"
+        sInfoFiltered: "(منتقاة من مجموع _MAX_ مُدخل)"
+        sInfoPostFix: ""
+        sLengthMenu: "أظهر _MENU_ مدخلات"
+        sProcessing: "جارٍ التحميل..."
+        sSearch: "ابحث:"
+        sZeroRecords: "لم يعثر على أية سجلات"
+        oPaginate:
+            sFirst: "الأول"
+            sLast: "السابق"
+            sNext: "التالي"
+            sPrevious: "الأخير"

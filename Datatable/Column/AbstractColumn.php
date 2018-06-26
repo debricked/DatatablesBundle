@@ -306,24 +306,26 @@ abstract class AbstractColumn implements ColumnInterface
         // 'dql' and 'data' options need no default value
         $resolver->setDefined(array('dql', 'data'));
 
-        $resolver->setDefaults(array(
-            'cell_type' => null,
-            'class_name' => null,
-            'content_padding' => null,
-            'default_content' => null,
-            'name' => null,
-            'orderable' => true,
-            'order_data' => null,
-            'order_sequence' => null,
-            'searchable' => true,
-            'title' => null,
-            'visible' => true,
-            'width' => null,
-            'add_if' => null,
-            'join_type' => 'leftJoin',
-            'type_of_field' => null,
-            'responsive_priority' => null,
-        ));
+        $resolver->setDefaults(
+            array(
+                'cell_type' => null,
+                'class_name' => null,
+                'content_padding' => null,
+                'default_content' => null,
+                'name' => null,
+                'orderable' => true,
+                'order_data' => null,
+                'order_sequence' => null,
+                'searchable' => true,
+                'title' => null,
+                'visible' => true,
+                'width' => null,
+                'add_if' => null,
+                'join_type' => 'leftJoin',
+                'type_of_field' => null,
+                'responsive_priority' => null,
+            )
+        );
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
         $resolver->setAllowedTypes('class_name', array('null', 'string'));
@@ -362,7 +364,8 @@ abstract class AbstractColumn implements ColumnInterface
     {
         if (true === $this->isCustomDql()) {
             return true;
-        } else {
+        }
+        else {
             return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
         }
     }
@@ -389,9 +392,13 @@ abstract class AbstractColumn implements ColumnInterface
     public function isToManyAssociation()
     {
         if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
-            if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
+            if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(
+                    ClassMetadataInfo::MANY_TO_MANY,
+                    $this->typeOfAssociation
+                )) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
@@ -410,9 +417,62 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptionsTemplate()
+    public function getOptionsArray(): array
     {
-        return 'SgDatatablesBundle:column:column.html.twig';
+        $options = [];
+
+        if ($this->getCellType() !== null) {
+            $options['cellType'] = $this->getCellType();
+        }
+        if ($this->getContentPadding() !== null) {
+            $options['contentPadding'] = $this->getContentPadding();
+        }
+        if ($this->getDefaultContent() !== null) {
+            $options['defaultContent'] = $this->getDefaultContent();
+        }
+        if ($this->getName() !== null) {
+            $options['name'] = $this->getName();
+        }
+        if ($this->getWidth() !== null) {
+            $options['width'] = $this->getWidth();
+        }
+        if ($this->getTitle() !== null) {
+            $options['title'] = $this->getTitle();
+        }
+        if ($this->getSearchable() !== null) {
+            $options['searchable'] = $this->getSearchable();
+        }
+        $options['visible'] = $this->getVisible();
+        if ($this->getVisible() === true && $this->getClassName() !== null) {
+            $options['className'] = $this->getClassName();
+        }
+        if ($this->getVisible() === false)
+        {
+            $options['className'] = 'never';
+            if ($this->getClassName() !== null)
+            {
+                $options['className'] .= ' ' . $this->getClassName();
+            }
+        }
+        $options['orderable'] = $this->getOrderable();
+        if ($this->getOrderable() === true)
+        {
+            if ($this->getOrderSequence() !== null)
+            {
+                $options['orderSequence'] = $this->getOrderSequence();
+            }
+            if ($this->getOrderData() !== null)
+            {
+                $options['orderData'] = $this->getOrderData();
+            }
+        }
+        if ($this->getResponsivePriority() !== null)
+        {
+            $options['responsivePriority'] = $this->getResponsivePriority();
+        }
+        $options['data'] = $this->getData();
+
+        return $options;
     }
 
     /**
@@ -887,7 +947,8 @@ abstract class AbstractColumn implements ColumnInterface
     {
         if (true === $this->dqlConstraint($dql)) {
             $this->dql = $dql;
-        } else {
+        }
+        else {
             throw new Exception("AbstractColumn::setDql(): $dql is not valid for this Column.");
         }
 

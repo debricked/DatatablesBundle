@@ -1,0 +1,24 @@
+##
+# Belarusian translation
+#  @name Belarusian
+#  @anchor Belarusian
+#  @author vkachurka
+##
+sg:
+    datatables:
+        sInfo: "Запісы з _START_ па _END_ з _TOTAL_ запісаў"
+        sInfoEmpty: "Запісы з 0 па 0 з 0 запісаў"
+        sInfoFiltered: "(адфільтравана з _MAX_ запісаў)"
+        sInfoPostFix: ""
+        sLengthMenu: "Паказваць _MENU_ запісаў"
+        sProcessing: "Пачакайце..."
+        sSearch: "Пошук:"
+        sZeroRecords: "Запісы адсутнічаюць."
+        oPaginate:
+            sFirst: "Першая"
+            sLast: "Апошняя"
+            sNext: "Наступная"
+            sPrevious: "Папярэдняя"
+        oAria:
+            sSortAscending: ": актываваць для сартавання слупка па ўзрастанні"
+            sSortDescending: ": актываваць для сартавання слупка па змяншэнні"

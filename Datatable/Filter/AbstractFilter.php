@@ -186,9 +186,7 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get initialSearch.
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getInitialSearch()
     {

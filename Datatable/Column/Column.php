@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class Column extends AbstractColumn
+class Column extends AbstractColumn implements FilterableInterface
 {
     /**
      * The Column is editable.

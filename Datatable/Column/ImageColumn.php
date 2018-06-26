@@ -23,7 +23,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class ImageColumn extends AbstractColumn
+class ImageColumn extends AbstractColumn implements FilterableInterface
 {
     /**
      * The Column is filterable.

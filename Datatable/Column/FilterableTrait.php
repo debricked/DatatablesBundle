@@ -36,9 +36,7 @@ trait FilterableTrait
     //-------------------------------------------------
 
     /**
-     * Get Filter instance.
-     *
-     * @return FilterInterface
+     * {@inheritdoc}
      */
     public function getFilter()
     {
@@ -46,12 +44,7 @@ trait FilterableTrait
     }
 
     /**
-     * Set Filter instance.
-     *
-     * @param array $filterClassAndOptions
-     *
-     * @return $this
-     * @throws Exception
+     * {@inheritdoc}
      */
     public function setFilter(array $filterClassAndOptions)
     {

@@ -76,9 +76,14 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function getOptionsTemplate()
+    public function getOptionsArray(): array
     {
-        return 'SgDatatablesBundle:column:multiselect.html.twig';
+        $options = [];
+
+        $options['title'] = "<input type='checkbox' name='sg-datatables-".$this->getDatatableName(
+            )."-multiselect-checkall' class='sg-datatables-".$this->getDatatableName()."-multiselect-checkall' />";
+
+        return \array_merge_recursive(parent::getOptionsArray(), $options);
     }
 
     /**
@@ -158,13 +163,15 @@ class MultiselectColumn extends ActionColumn
         // predefined in the view as Checkbox
         $resolver->remove('title');
 
-        $resolver->setDefaults(array(
-            'attributes' => null,
-            'value' => 'id',
-            'value_prefix' => false,
-            'render_actions_to_id' => null,
-            'render_if' => null,
-        ));
+        $resolver->setDefaults(
+            array(
+                'attributes' => null,
+                'value' => 'id',
+                'value_prefix' => false,
+                'render_actions_to_id' => null,
+                'render_if' => null,
+            )
+        );
 
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
         $resolver->setAllowedTypes('value', 'string');
@@ -194,8 +201,11 @@ class MultiselectColumn extends ActionColumn
                 $newAction = new MultiselectAction($this->datatableName);
                 $this->actions[] = $newAction->set($action);
             }
-        } else {
-            throw new Exception('MultiselectColumn::setActions(): The actions array should contain at least one element.');
+        }
+        else {
+            throw new Exception(
+                'MultiselectColumn::setActions(): The actions array should contain at least one element.'
+            );
         }
 
         return $this;
@@ -234,15 +244,18 @@ class MultiselectColumn extends ActionColumn
 
             if (array_key_exists('name', $attributes)) {
                 $attributes['name'] = $value.' '.$attributes['name'];
-            } else {
+            }
+            else {
                 $attributes['name'] = $value;
             }
             if (array_key_exists('class', $attributes)) {
                 $attributes['class'] = $value.' '.$attributes['class'];
-            } else {
+            }
+            else {
                 $attributes['class'] = $value;
             }
-        } else {
+        }
+        else {
             $attributes['name'] = $value;
             $attributes['class'] = $value;
         }

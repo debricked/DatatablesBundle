@@ -23,7 +23,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class DateTimeColumn extends AbstractColumn
+class DateTimeColumn extends AbstractColumn implements FilterableInterface
 {
     /**
      * This Column is editable.

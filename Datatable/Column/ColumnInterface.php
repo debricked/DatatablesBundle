@@ -64,9 +64,9 @@ interface ColumnInterface
     /**
      * Get the template, in which all DataTables-Columns-Options set.
      *
-     * @return string
+     * @return array
      */
-    public function getOptionsTemplate();
+    public function getOptionsArray(): array;
 
     /**
      * Sometimes it is necessary to add some special data to the output array.

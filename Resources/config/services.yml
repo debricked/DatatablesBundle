@@ -7,6 +7,11 @@ services:
             $datatables: !tagged sg.datatable
             $projectDir: "%kernel.project_dir%"
 
+    Sg\DatatablesBundle\Controller\JsonController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
         public: false
