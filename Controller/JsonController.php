@@ -317,7 +317,7 @@ class JsonController extends Controller
         $columns = [];
 
         foreach ($datatable->getColumnBuilder()->getColumns() as $column) {
-            $columns[] = $column->getOptionsArray();
+            $columns['columns'][] = $column->getOptionsArray();
         }
 
         return new JsonResponse($columns);

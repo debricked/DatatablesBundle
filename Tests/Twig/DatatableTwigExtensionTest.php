@@ -55,7 +55,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
             $renderedContent
         );
         $this->assertContains(
-            '[{"title":"Id","searchable":true,"visible":true,"orderable":true,"data":"id"},{"title":"Title","searchable":true,"visible":true,"orderable":true,"data":"title"},{"title":"datatables.actions.title","searchable":false,"visible":true,"orderable":false,"data":2}]',
+            '{"columns":[{"title":"Id","searchable":true,"visible":true,"orderable":true,"data":"id"},{"title":"Title","searchable":true,"visible":true,"orderable":true,"data":"title"},{"title":"datatables.actions.title","searchable":false,"visible":true,"orderable":false,"data":2}]}',
             $renderedContent
         );
 
