@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
 
 class JsonController extends Controller
 {
@@ -22,11 +21,11 @@ class JsonController extends Controller
     private $assetsHelper;
 
     /**
-     * @var EngineInterface
+     * @var \Twig_Environment
      */
     private $engine;
 
-    public function __construct(Packages $assetsHelper, EngineInterface $engine)
+    public function __construct(Packages $assetsHelper, \Twig_Environment $engine)
     {
         $this->assetsHelper = $assetsHelper;
         $this->engine = $engine;
@@ -99,8 +98,8 @@ class JsonController extends Controller
             $options['displayStart'] = $datatableOptions->getDisplayStart();
         }
         if ($datatableOptions->getDom() !== null) {
-            // TODO: Escape using JS strategy
-            $options['dom'] = $datatableOptions->getDom();
+            /* @noinspection PhpUnhandledExceptionInspection */
+            $options['dom'] = \twig_escape_filter($this->engine, $datatableOptions->getDom(), 'js');
         }
         if ($datatableOptions->getLengthMenu() !== null) {
             $options['lengthMenu'] = $datatableOptions->getLengthMenu();
@@ -402,6 +401,7 @@ class JsonController extends Controller
             $vars = $callback['vars'];
         }
 
+        /* @noinspection PhpUnhandledExceptionInspection */
         return $this->engine->render($callback['template'], $vars);
     }
 
