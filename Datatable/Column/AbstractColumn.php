@@ -11,15 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-use Sg\DatatablesBundle\Datatable\AddIfTrait;
-use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Twig_Environment;
 use Exception;
+use Sg\DatatablesBundle\Datatable\AddIfTrait;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig_Environment;
 
 /**
  * Class AbstractColumn
@@ -446,28 +445,22 @@ abstract class AbstractColumn implements ColumnInterface
         if ($this->getVisible() === true && $this->getClassName() !== null) {
             $options['className'] = $this->getClassName();
         }
-        if ($this->getVisible() === false)
-        {
+        if ($this->getVisible() === false) {
             $options['className'] = 'never';
-            if ($this->getClassName() !== null)
-            {
-                $options['className'] .= ' ' . $this->getClassName();
+            if ($this->getClassName() !== null) {
+                $options['className'] .= ' '.$this->getClassName();
             }
         }
         $options['orderable'] = $this->getOrderable();
-        if ($this->getOrderable() === true)
-        {
-            if ($this->getOrderSequence() !== null)
-            {
+        if ($this->getOrderable() === true) {
+            if ($this->getOrderSequence() !== null) {
                 $options['orderSequence'] = $this->getOrderSequence();
             }
-            if ($this->getOrderData() !== null)
-            {
+            if ($this->getOrderData() !== null) {
                 $options['orderData'] = $this->getOrderData();
             }
         }
-        if ($this->getResponsivePriority() !== null)
-        {
+        if ($this->getResponsivePriority() !== null) {
             $options['responsivePriority'] = $this->getResponsivePriority();
         }
         $options['data'] = $this->getData();
@@ -708,10 +701,6 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function getOrderData()
     {
-        if (is_array($this->orderData)) {
-            return $this->optionToJson($this->orderData);
-        }
-
         return $this->orderData;
     }
 
@@ -734,12 +723,8 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @return null|array
      */
-    public function getOrderSequence()
+    public function getOrderSequence(): ?array
     {
-        if (is_array($this->orderSequence)) {
-            return $this->optionToJson($this->orderSequence);
-        }
-
         return $this->orderSequence;
     }
 

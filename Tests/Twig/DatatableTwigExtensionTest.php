@@ -66,6 +66,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
             "<'row'<'col-sm-12'tr>>".
             "<'row'<'col-sm-5'i><'col-sm-7'p>>"
         );
+        $this->postDatatable->getOptions()->setLengthMenu([10, 25, 50, 100]);
         /* @noinspection PhpUnhandledExceptionInspection */
         $modifiedRenderedContent = $this->datatableTwigExtension->datatablesRenderJsValues(
             $this->twig,
@@ -76,7 +77,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
             $modifiedRenderedContent
         );
         $this->assertContains(
-            '{"dom":"\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27l\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27f\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D12\\\\x27tr\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D5\\\\x27i\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D7\\\\x27p\\\\x3E\\\\x3E","order":[[0,"asc"]]}',
+            '{"dom":"\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27l\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27f\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D12\\\\x27tr\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D5\\\\x27i\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D7\\\\x27p\\\\x3E\\\\x3E","lengthMenu":[10,25,50,100],"order":[[0,"asc"]]}',
             $modifiedRenderedContent
         );
     }

@@ -88,19 +88,21 @@ class Ajax
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'url' => null,
-            'type' => 'GET',
-            'data' => null,
-            'pipeline' => 0,
-        ));
+        $resolver->setDefaults(
+            [
+                'url' => null,
+                'type' => 'GET',
+                'data' => null,
+                'pipeline' => 0,
+            ]
+        );
 
-        $resolver->setAllowedTypes('url', array('null', 'string'));
+        $resolver->setAllowedTypes('url', ['null', 'string']);
         $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('data', array('null', 'array'));
+        $resolver->setAllowedTypes('data', ['null', 'array']);
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('type', array('GET', 'POST'));
+        $resolver->setAllowedValues('type', ['GET', 'POST']);
 
         return $this;
     }
@@ -162,12 +164,8 @@ class Ajax
      *
      * @return null|array
      */
-    public function getData()
+    public function getData(): ?array
     {
-        if (is_array($this->data)) {
-            return $this->optionToJson($this->data);
-        }
-
         return $this->data;
     }
 

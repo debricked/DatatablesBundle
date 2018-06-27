@@ -11,10 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class Buttons
@@ -73,13 +72,15 @@ class Buttons
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'show_buttons' => null,
-            'create_buttons' => null,
-        ));
+        $resolver->setDefaults(
+            [
+                'show_buttons' => null,
+                'create_buttons' => null,
+            ]
+        );
 
-        $resolver->setAllowedTypes('show_buttons', array('null', 'array'));
-        $resolver->setAllowedTypes('create_buttons', array('null', 'array'));
+        $resolver->setAllowedTypes('show_buttons', ['null', 'array']);
+        $resolver->setAllowedTypes('create_buttons', ['null', 'array']);
 
         return $this;
     }
@@ -93,12 +94,8 @@ class Buttons
      *
      * @return array|null
      */
-    public function getShowButtons()
+    public function getShowButtons(): ?array
     {
-        if (is_array($this->showButtons)) {
-            return $this->optionToJson($this->showButtons);
-        }
-
         return $this->showButtons;
     }
 
@@ -142,10 +139,14 @@ class Buttons
                     $newButton = new Button();
                     $this->createButtons[] = $newButton->set($button);
                 }
-            } else {
-                throw new Exception('Buttons::setCreateButtons(): The createButtons array should contain at least one element.');
             }
-        } else {
+            else {
+                throw new Exception(
+                    'Buttons::setCreateButtons(): The createButtons array should contain at least one element.'
+                );
+            }
+        }
+        else {
             $this->createButtons = $createButtons;
         }
 
