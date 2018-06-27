@@ -61,6 +61,12 @@ let exports = module.exports = {
         columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").text());
         initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").text());
 
+        if (ajax.pipeline > 0)
+        {
+            ajax.ajax = $.fn.dataTable.pipeline(ajax.ajax);
+        }
+        delete ajax.pipeline;
+
         $.extend(defaults, language);
         $.extend(defaults, ajax);
         $.extend(defaults, options);

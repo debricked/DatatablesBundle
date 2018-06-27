@@ -51,7 +51,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
         $renderedContent = $this->datatableTwigExtension->datatablesRenderJsValues($this->twig, $this->postDatatable);
         $this->assertContains('{"searchCols":[null,null,null]}', $renderedContent);
         $this->assertContains(
-            '{"serverSide":true,"ajax":{"url":"\/en\/post\/results","type":"GET"}}',
+            '{"serverSide":true,"pipeline":0,"ajax":{"url":"\/en\/post\/results","type":"GET"}}',
             $renderedContent
         );
         $this->assertContains(
@@ -73,7 +73,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
             $this->postDatatable
         );
         $this->assertContains(
-            '{"serverSide":true,"ajax":"$.fn.dataTable.pipeline({\u0022url\u0022:\u0022\/en\/post\/results\u0022,\u0022type\u0022:\u0022GET\u0022,\u0022pages\u0022:1})"}',
+            '{"serverSide":true,"pipeline":1,"ajax":{"url":"\/en\/post\/results","type":"GET"}}',
             $modifiedRenderedContent
         );
         $this->assertContains(
