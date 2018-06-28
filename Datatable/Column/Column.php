@@ -11,10 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Helper;
-use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-
+use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -22,12 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class Column extends AbstractColumn implements FilterableInterface
+class Column extends AbstractColumn implements IsEditableInterface, FilterableInterface
 {
     /**
      * The Column is editable.
      */
-    use EditableTrait;
+    use IsEditableTrait;
 
     /**
      * The Column is filterable.
@@ -81,7 +80,8 @@ class Column extends AbstractColumn implements FilterableInterface
 
                     $this->accessor->setValue($row, $currentPath, $content);
                 }
-            } else {
+            }
+            else {
                 // no placeholder - leave this blank
             }
         }
@@ -133,13 +133,15 @@ class Column extends AbstractColumn implements FilterableInterface
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'filter' => array(TextFilter::class, array()),
-            'editable' => null,
-        ));
+        $resolver->setDefaults(
+            [
+                'filter' => [TextFilter::class, []],
+                'editable' => null,
+            ]
+        );
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('editable', array('null', 'array'));
+        $resolver->setAllowedTypes('editable', ['null', 'array']);
 
         return $this;
     }

@@ -14,14 +14,12 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 
-use Exception;
-
 /**
  * Class EditableTrait
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-trait EditableTrait
+trait IsEditableTrait
 {
     /**
      * An EditableInterface instance.
@@ -36,36 +34,29 @@ trait EditableTrait
     //-------------------------------------------------
 
     /**
-     * Get editable.
-     *
-     * @return null|EditableInterface
+     * {@inheritdoc}
      */
-    public function getEditable()
+    public function getEditable(): ?EditableInterface
     {
         return $this->editable;
     }
 
     /**
-     * Set editable.
-     *
-     * @param null|array $editableClassAndOptions
-     *
-     * @return $this
-     * @throws Exception
+     * {@inheritdoc}
      */
     public function setEditable($editableClassAndOptions)
     {
         if (is_array($editableClassAndOptions)) {
             if (count($editableClassAndOptions) != 2) {
-                throw new Exception('EditableTrait::setEditable(): Two arguments expected.');
+                throw new \Exception('EditableTrait::setEditable(): Two arguments expected.');
             }
 
             if (!isset($editableClassAndOptions[0]) || !is_string($editableClassAndOptions[0]) && !$editableClassAndOptions[0] instanceof EditableInterface) {
-                throw new Exception('EditableTrait::setEditable(): Set a Editable class.');
+                throw new \Exception('EditableTrait::setEditable(): Set a Editable class.');
             }
 
             if (!isset($editableClassAndOptions[1]) || !is_array($editableClassAndOptions[1])) {
-                throw new Exception('EditableTrait::setEditable(): Set an options array.');
+                throw new \Exception('EditableTrait::setEditable(): Set an options array.');
             }
 
             $newEditable = Factory::create($editableClassAndOptions[0], EditableInterface::class);
