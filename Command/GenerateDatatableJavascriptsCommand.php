@@ -103,8 +103,8 @@ class GenerateDatatableJavascriptsCommand extends Command
         }
 
         $output->writeln(
-            '<success>Successfully generated javascript files for '.\count($this->datatables)
-            .' datatable(s)</success>'
+            '<info>Successfully generated javascript files for '.\count($this->datatables)
+            .' datatable(s)</info>'
         );
 
         $this->release();
