@@ -44,7 +44,7 @@ trait IsEditableTrait
     /**
      * {@inheritdoc}
      */
-    public function setEditable($editableClassAndOptions)
+    public function setEditable(?array $editableClassAndOptions)
     {
         if (is_array($editableClassAndOptions)) {
             if (count($editableClassAndOptions) != 2) {
