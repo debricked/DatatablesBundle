@@ -7,15 +7,9 @@
  # file that was distributed with this source code.
  #}
 {% if column.filter.cancelButton is same as(true) %}
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            $("#{{ cancel_button_id_selector }}").click(function () {
-                if ('' != $("#{{ filter_id_selector }}").val()) {
-                    $("#{{ filter_id_selector }}")
-                        .val('')
-                        .change();
-                }
-            });
-        }, false);
-    </script>
+    <button type="button"
+            id="{{ cancel_button_id_selector }}"
+            class="btn btn-default btn-xs"
+            data-datatables-filter="cancel"
+    >&times;</button>
 {% endif %}

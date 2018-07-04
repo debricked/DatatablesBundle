@@ -87,15 +87,29 @@ let exports = module.exports = {
                 $(this).val(picker.startDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}"));
                 $(this).change();
             });
-            $element.parent().find("[data-datatables-filter='cancel']").each(function (index, clearButton)
-            {
-                $(clearButton).click(function () {
-                    if ('' != $element.val()) {
-                        $element
-                        .val('')
-                        .change();
-                    }
-                });
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+        $(selector).find("[data-datatables-filter='select']").each(function (index, element)
+        {
+            let $element = $(element);
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+        $(selector).find("[data-datatables-filter='input']").each(function (index, element)
+        {
+            let $element = $(element);
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+    },
+
+    initialiseClearButton($container, $input) {
+        $container.find("[data-datatables-filter='cancel']").each(function (index, clearButton)
+        {
+            $(clearButton).click(function () {
+                if ($input.val().length !== 0) {
+                    $input
+                    .val('')
+                    .change();
+                }
             });
         });
     },

@@ -74,15 +74,6 @@
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
 {%- endset -%}
 
-{% set cancel_button_html %}
-    {% if column.filter.cancelButton is same as(true) %}
-        <button type="button"
-                id="{{ cancel_button_id_selector }}"
-                class="btn btn-default btn-xs"
-	>&times;</button>
-    {% endif %}
-{% endset %}
-
 {% set filter_input_range_label_html %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
         {% if column.filter.showLabel is same as(true) %}
@@ -130,13 +121,13 @@
 	    {{ filter_input_minmax }}         {# min = "" max = "" step = "" #}
 	    {{ filter_input_datalist }}       {# list = "" #}
 	    {{ filter_input_initial_search }} {# value = "" #}
+        data-datatables-filter="input"
     />
     {{ filter_input_datalist_values }}        {# <datalist> #}
-    {{ cancel_button_html }}
+    {% include '@SgDatatables/filter/_cancel_button.html.twig' %}
     {{ filter_input_range_label_html }}
 {% endblock %}
 
 {% block javascript %}
-    {% include 'SgDatatablesBundle:filter:_cancel_button.html.twig' %}
     {{ filter_input_range_label_js }}
 {% endblock %}
