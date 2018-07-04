@@ -11,6 +11,8 @@
 
 "use strict";
 
+const moment = require("moment");
+
 const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
 let oTable;
 
@@ -44,11 +46,24 @@ let exports = module.exports = {
     },
 
     postCreateDatatable(pipeline) {
-    {% for column in sg_datatables_view.columnBuilder.columns %}
-        {% if column.renderPostCreateDatatableJsContent is not null %}
-            {{ column.renderPostCreateDatatableJsContent|raw }}
-        {% endif %}
-    {% endfor %}
+        {% for column in sg_datatables_view.columnBuilder.columns %}
+            {% if column.renderPostCreateDatatableJsContent is not null %}
+                {{ column.renderPostCreateDatatableJsContent|raw }}
+            {% endif %}
+        {% endfor %}
+        moment.locale($("#{{ sg_datatables_view.name }}-locale").text());
+        $(selector).find("[data-datatables-extension='moment']").each(function (index, element)
+        {
+            let $element = $(element);
+            if ($element.attr("data-datatables-moment-format") !== "fromNow")
+            {
+                $element.html(moment.unix($element.attr("data-datatables-moment-value")).format($element.attr("data-datatables-moment-format")));
+            }
+            else
+            {
+                $element.html(moment.unix($element.attr("data-datatables-moment-value")).fromNow());
+            }
+        });
     },
 
     createDatatable() {
