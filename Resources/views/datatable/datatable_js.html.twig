@@ -11,6 +11,8 @@
 
 "use strict";
 
+require("daterangepicker");
+require("daterangepicker/daterangepicker.css");
 const moment = require("moment");
 
 const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
@@ -63,6 +65,38 @@ let exports = module.exports = {
             {
                 $element.html(moment.unix($element.attr("data-datatables-moment-value")).fromNow());
             }
+        });
+        $(selector).find("[data-datatables-filter='daterange']").each(function (index, element)
+        {
+            let $element = $(element);
+            $element.daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: "{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}",
+                    applyLabel: "{{ 'sg.datatables.daterange.apply'|trans({}, 'messages') }}",
+                    cancelLabel: "{{ 'sg.datatables.daterange.cancel'|trans({}, 'messages') }}",
+                    daysOfWeek: moment.weekdaysMin(),
+                    monthNames: moment.monthsShort(),
+                    firstDay: moment.localeData().firstDayOfWeek()
+                }
+            }).on('cancel.daterangepicker', function () {
+                $(this).val('');
+                $(this).change();
+            })
+            .on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}"));
+                $(this).change();
+            });
+            $element.parent().find("[data-datatables-filter='cancel']").each(function (index, clearButton)
+            {
+                $(clearButton).click(function () {
+                    if ('' != $element.val()) {
+                        $element
+                        .val('')
+                        .change();
+                    }
+                });
+            });
         });
     },
 

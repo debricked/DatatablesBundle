@@ -9,10 +9,12 @@
         "datatable",
         "datatables",
         "data-table",
+        "encore",
         "grid",
         "table",
         "datagrid",
-        "pagination"
+        "pagination",
+        "webpack"
     ],
     "homepage": "https://github.com/debricked/DatatablesBundle",
     "license": "MIT",
