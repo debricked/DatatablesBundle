@@ -90,7 +90,7 @@ class JsonController extends Controller
         }
         if ($datatableOptions->getDom() !== null) {
             /* @noinspection PhpUnhandledExceptionInspection */
-            $options['dom'] = \twig_escape_filter($this->engine, $datatableOptions->getDom(), 'js');
+            $options['dom'] = $datatableOptions->getDom();
         }
         if ($datatableOptions->getLengthMenu() !== null) {
             $options['lengthMenu'] = $datatableOptions->getLengthMenu();
