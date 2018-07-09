@@ -24,7 +24,7 @@ let search = $.fn.dataTable.util.throttle(
         oTable
             .column($(event.currentTarget).data("search-column-index"))
             .search($(this).val());
-        this.drawTable();
+        exports.drawTable(pipeline);
     },
     options.searchDelay
 );
@@ -37,5 +37,5 @@ $(selector).find("tr select.sg-datatables-individual-filtering").on("keyup chang
     oTable
         .column($(event.currentTarget).data("search-column-index"))
         .search(searchValue);
-    this.drawTable();
+    exports.drawTable();
 });

@@ -98,6 +98,10 @@ class JsonController extends Controller
         if ($datatableOptions->getOrder() !== null) {
             $options['order'] = $datatableOptions->getOrder();
         }
+        if ($datatableOptions->isIndividualFiltering() !== null)
+        {
+            $options['individualFiltering'] = $datatableOptions->isIndividualFiltering();
+        }
         if ($datatableOptions->isOrderCellsTop() !== null) {
             $options['orderCellsTop'] = $datatableOptions->isOrderCellsTop();
         }

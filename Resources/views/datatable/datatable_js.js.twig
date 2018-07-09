@@ -18,8 +18,7 @@ const moment = require("moment");
 const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
 let oTable;
 
-let defaults = {
-};
+let defaults = {};
 
 let language;
 
@@ -39,35 +38,32 @@ let initialSearch;
 
 let exports = module.exports = {
 
-    drawTable() {
-        {% if sg_datatables_view.ajax.pipeline > 0 %}
+    drawTable(pipeline) {
+        if (pipeline > 0) {
             oTable.clearPipeline().draw();
-        {% else %}
+        }
+        else {
             oTable.draw();
-        {% endif %}
+        }
     },
 
     postCreateDatatable(pipeline) {
         {% for column in sg_datatables_view.columnBuilder.columns %}
-            {% if column.renderPostCreateDatatableJsContent is not null %}
-                {{ column.renderPostCreateDatatableJsContent|raw }}
-            {% endif %}
+        {% if column.renderPostCreateDatatableJsContent is not null %}
+        {{ column.renderPostCreateDatatableJsContent|raw }}
+        {% endif %}
         {% endfor %}
         moment.locale($("#{{ sg_datatables_view.name }}-locale").text());
-        $(selector).find("[data-datatables-extension='moment']").each(function (index, element)
-        {
+        $(selector).find("[data-datatables-extension='moment']").each(function (index, element) {
             let $element = $(element);
-            if ($element.attr("data-datatables-moment-format") !== "fromNow")
-            {
+            if ($element.attr("data-datatables-moment-format") !== "fromNow") {
                 $element.html(moment.unix($element.attr("data-datatables-moment-value")).format($element.attr("data-datatables-moment-format")));
             }
-            else
-            {
+            else {
                 $element.html(moment.unix($element.attr("data-datatables-moment-value")).fromNow());
             }
         });
-        $(selector).find("[data-datatables-filter='daterange']").each(function (index, element)
-        {
+        $(selector).find("[data-datatables-filter='daterange']").each(function (index, element) {
             let $element = $(element);
             $element.daterangepicker({
                 autoUpdateInput: false,
@@ -83,32 +79,29 @@ let exports = module.exports = {
                 $(this).val('');
                 $(this).change();
             })
-            .on('apply.daterangepicker', function (ev, picker) {
-                $(this).val(picker.startDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}"));
-                $(this).change();
-            });
+                .on('apply.daterangepicker', function (ev, picker) {
+                    $(this).val(picker.startDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}"));
+                    $(this).change();
+                });
             exports.initialiseClearButton($element.parent(), $element);
         });
-        $(selector).find("[data-datatables-filter='select']").each(function (index, element)
-        {
+        $(selector).find("[data-datatables-filter='select']").each(function (index, element) {
             let $element = $(element);
             exports.initialiseClearButton($element.parent(), $element);
         });
-        $(selector).find("[data-datatables-filter='input']").each(function (index, element)
-        {
+        $(selector).find("[data-datatables-filter='input']").each(function (index, element) {
             let $element = $(element);
             exports.initialiseClearButton($element.parent(), $element);
         });
     },
 
     initialiseClearButton($container, $input) {
-        $container.find("[data-datatables-filter='cancel']").each(function (index, clearButton)
-        {
+        $container.find("[data-datatables-filter='cancel']").each(function (index, clearButton) {
             $(clearButton).click(function () {
                 if ($input.val().length !== 0) {
                     $input
-                    .val('')
-                    .change();
+                        .val('')
+                        .change();
                 }
             });
         });
@@ -124,8 +117,8 @@ let exports = module.exports = {
         columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").text());
         initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").text());
 
-        if (ajax.pipeline > 0)
-        {
+        const pipeline = ajax.pipeline;
+        if (pipeline > 0) {
             ajax.ajax = $.fn.dataTable.pipeline(ajax.ajax);
         }
         delete ajax.pipeline;
@@ -145,18 +138,20 @@ let exports = module.exports = {
             ;
 
             oTable = $(selector)
-            .DataTable(defaults)
-            .on('draw.dt', function() { exports.postCreateDatatable({{ sg_datatables_view.ajax.pipeline }}); })
+                .DataTable(defaults)
+                .on('draw.dt', function () {
+                    exports.postCreateDatatable(pipeline);
+                })
             ;
 
-            {% if true == sg_datatables_view.options.individualFiltering %}
+            if (options.hasOwnProperty("individualFiltering") === true && options.individualFiltering === true) {
                 {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
-            {% endif %}
+            }
         }
     }
 
     {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
-        {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
+    {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
     {% endif %}
 
 };

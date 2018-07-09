@@ -72,7 +72,7 @@ class GenerateDatatableJavascriptsCommand extends Command
         foreach ($this->datatables as $datatable) {
                 try {
                     $datatableJavascript = $this->renderingEngine->render(
-                        'SgDatatablesBundle:datatable:datatable_js.html.twig',
+                        'SgDatatablesBundle:datatable:datatable_js.js.twig',
                         [
                             'sg_datatables_view' => $datatable,
                         ]
