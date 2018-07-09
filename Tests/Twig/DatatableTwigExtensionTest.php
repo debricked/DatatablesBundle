@@ -77,7 +77,7 @@ class DatatableTwigExtensionTest extends KernelTestCase
             $modifiedRenderedContent
         );
         $this->assertContains(
-            '{"dom":"\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27l\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D6\\\\x27f\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D12\\\\x27tr\\\\x3E\\\\x3E\\\\x3C\\\\x27row\\\\x27\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D5\\\\x27i\\\\x3E\\\\x3C\\\\x27col\\\\x2Dsm\\\\x2D7\\\\x27p\\\\x3E\\\\x3E","lengthMenu":[10,25,50,100],"order":[[0,"asc"]],"individualFiltering":true}',
+            '{"dom":"\u003C\u0027row\u0027\u003C\u0027col-sm-6\u0027l\u003E\u003C\u0027col-sm-6\u0027f\u003E\u003E\u003C\u0027row\u0027\u003C\u0027col-sm-12\u0027tr\u003E\u003E\u003C\u0027row\u0027\u003C\u0027col-sm-5\u0027i\u003E\u003C\u0027col-sm-7\u0027p\u003E\u003E","lengthMenu":[10,25,50,100],"order":[[0,"asc"]],"individualFiltering":true}',
             $modifiedRenderedContent
         );
     }
