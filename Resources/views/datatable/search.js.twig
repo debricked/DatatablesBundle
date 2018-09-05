@@ -29,13 +29,23 @@ let search = $.fn.dataTable.util.throttle(
     options.searchDelay
 );
 
-$(selector).find("tr input.sg-datatables-individual-filtering").on("keyup change", search);
+const inputIndividualFilteringSelector = "tr input.sg-datatables-individual-filtering";
+const selectIndividualFilteringSelector = "tr select.sg-datatables-individual-filtering";
+$(selector).find(inputIndividualFilteringSelector).on("keyup change", search);
 
-$(selector).find("tr select.sg-datatables-individual-filtering").on("keyup change", function (event) {
+const selectSearch = function (event) {
     let searchValue = $(this).val();
     searchValue = searchValue ? searchValue.toString() : '';
     oTable
         .column($(event.currentTarget).data("search-column-index"))
         .search(searchValue);
     exports.drawTable();
-});
+};
+
+$(selector).find(selectIndividualFilteringSelector).on("keyup change", selectSearch);
+const realFooter = $(selector).parent(".dataTables_scrollBody").next(".dataTables_scrollFoot");
+if (realFooter.length > 0)
+{
+    realFooter.find(inputIndividualFilteringSelector).on("keyup change", search);
+    realFooter.find(selectIndividualFilteringSelector).on("keyup change", selectSearch);
+}

@@ -47,7 +47,7 @@ let exports = module.exports = {
         }
     },
 
-    postCreateDatatable(pipeline) {
+    postCreateDatatable(pipeline, options) {
         {% for column in sg_datatables_view.columnBuilder.columns %}
         {% if column.renderPostCreateDatatableJsContent is not null %}
         {{ column.renderPostCreateDatatableJsContent|raw }}
@@ -93,6 +93,10 @@ let exports = module.exports = {
             let $element = $(element);
             exports.initialiseClearButton($element.parent(), $element);
         });
+        {#  register handlers for individual filtering #}
+        if (options.hasOwnProperty("individualFiltering") === true && options.individualFiltering === true) {
+            {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+        }
     },
 
     initialiseClearButton($container, $input) {
@@ -140,13 +144,9 @@ let exports = module.exports = {
             oTable = $(selector)
                 .DataTable(defaults)
                 .on('draw.dt', function () {
-                    exports.postCreateDatatable(pipeline);
+                    exports.postCreateDatatable(pipeline, options);
                 })
             ;
-
-            if (options.hasOwnProperty("individualFiltering") === true && options.individualFiltering === true) {
-                {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
-            }
         }
     }
 
