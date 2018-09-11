@@ -73,7 +73,7 @@ class JsonController extends Controller
         $ajax = [];
         $ajax['serverSide'] = true;
         $ajax['pipeline'] = $datatable->getAjax()->getPipeline();
-        $ajax['ajax'] = $ajaxVars;
+        $ajax['ajax'] = \array_merge($ajaxVars, ['pages' => $datatable->getAjax()->getPipeline()]);
 
         return new JsonResponse($ajax);
     }
@@ -98,8 +98,7 @@ class JsonController extends Controller
         if ($datatableOptions->getOrder() !== null) {
             $options['order'] = $datatableOptions->getOrder();
         }
-        if ($datatableOptions->isIndividualFiltering() !== null)
-        {
+        if ($datatableOptions->isIndividualFiltering() !== null) {
             $options['individualFiltering'] = $datatableOptions->isIndividualFiltering();
         }
         if ($datatableOptions->isOrderCellsTop() !== null) {
