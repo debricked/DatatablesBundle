@@ -61,7 +61,7 @@ class Ajax
      *
      * @var int Number of pages to cache. Set to zero to disable feature.
      */
-    protected $pipeline;
+    protected $pipeline = 0;
 
     //-------------------------------------------------
     // Ctor.

@@ -69,11 +69,13 @@ class JsonController extends Controller
         if ($datatable->getAjax()->getData() !== null) {
             $ajaxVars['data'] = $datatable->getAjax()->getData();
         }
+        $pipeline = $datatable->getAjax()->getPipeline();
+        $ajaxVars['pages'] = $pipeline;
 
         $ajax = [];
         $ajax['serverSide'] = true;
-        $ajax['pipeline'] = $datatable->getAjax()->getPipeline();
-        $ajax['ajax'] = \array_merge($ajaxVars, ['pages' => $datatable->getAjax()->getPipeline()]);
+        $ajax['pipeline'] = $pipeline;
+        $ajax['ajax'] = $ajaxVars;
 
         return new JsonResponse($ajax);
     }
