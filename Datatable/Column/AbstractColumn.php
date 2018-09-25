@@ -599,9 +599,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get data.
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -609,11 +607,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set data.
-     *
-     * @param null|string $data
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setData($data)
     {
@@ -989,9 +983,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get index.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getIndex()
     {
@@ -999,11 +991,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set index.
-     *
-     * @param int $index
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setIndex($index)
     {
