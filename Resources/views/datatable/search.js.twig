@@ -46,6 +46,6 @@ $(selector).find(selectIndividualFilteringSelector).on("keyup change", selectSea
 const realFooter = $(selector).parent(".dataTables_scrollBody").next(".dataTables_scrollFoot");
 if (realFooter.length > 0)
 {
-    realFooter.find(inputIndividualFilteringSelector).on("keyup change", search);
-    realFooter.find(selectIndividualFilteringSelector).on("keyup change", selectSearch);
+    realFooter.find(inputIndividualFilteringSelector).off().on("keyup change", search);
+    realFooter.find(selectIndividualFilteringSelector).off().on("keyup change", selectSearch);
 }
