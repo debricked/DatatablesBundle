@@ -112,6 +112,11 @@ let exports = module.exports = {
     },
 
     createDatatable() {
+        if ($(selector).length === 0) {
+            console.log(`No element matching DataTables selector ${selector} exist!`);
+            return;
+        }
+
         language = JSON.parse($("#{{ sg_datatables_view.name }}-language").text());
         ajax = JSON.parse($("#{{ sg_datatables_view.name }}-ajax").text());
         options = JSON.parse($("#{{ sg_datatables_view.name }}-options").text());
