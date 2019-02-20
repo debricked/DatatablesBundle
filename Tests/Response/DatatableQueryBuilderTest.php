@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sg\DatatablesBundle\Datatable\Ajax;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
@@ -25,7 +26,7 @@ use Sg\DatatablesBundle\Datatable\Features;
 use Sg\DatatablesBundle\Datatable\Options;
 use Sg\DatatablesBundle\Response\DatatableQueryBuilder;
 
-class DatatableQueryBuilderTest extends \PHPUnit_Framework_TestCase
+class DatatableQueryBuilderTest extends TestCase
 {
     /** @var ObjectProphecy|EntityManagerInterface */
     private $entityManager;
