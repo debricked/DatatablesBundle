@@ -1,31 +1,66 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "debricked/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
-    "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "keywords": [
+        "symfony3",
+        "symfony4",
+        "symfony",
+        "datatable",
+        "datatables",
+        "data-table",
+        "encore",
+        "grid",
+        "table",
+        "datagrid",
+        "pagination",
+        "webpack"
+    ],
+    "homepage": "https://github.com/debricked/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
             "name": "stwe"
         },
         {
+            "name": "sweoggy"
+        },
+        {
+            "name": "debricked AB",
+            "homepage": "https://debricked.com"
+        },
+        {
             "name": "SgDatatablesBundle contributors",
-            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
+            "homepage": "https://github.com/sweoggy/DatatablesBundle/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/sweoggy/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=7.1",
-        "symfony/framework-bundle": "^3.0|^4.0",
+        "php": ">=7.1.0",
+        "doctrine/doctrine-bundle": "^1.7",
         "doctrine/orm": "^2.5",
-        "symfony/options-resolver": "^3.0|^4.0",
-        "symfony/property-access": "^3.0|^4.0",
-        "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
+        "friendsofsymfony/jsrouting-bundle": "^2.0",
+        "symfony/framework-bundle": "^3.4|^4.0",
+        "symfony/maker-bundle": "^1.0.2",
+        "symfony/lock": "^3.4|^4.0",
+        "symfony/options-resolver": "^3.4|^4.0",
+        "symfony/property-access": "^3.4|^4.0",
+        "symfony/security-bundle": "^3.4|^4.0",
+        "symfony/templating": "^3.4|^4.0",
+        "symfony/translation": "^3.4|^4.0",
+        "symfony/twig-bundle": "^3.4|^4.0",
+        "twig/twig": "^2.0.0"
+    },
+    "require-dev": {
+        "matthiasnoback/symfony-dependency-injection-test": "^2.3",
+        "phpunit/phpunit": "^6.0",
+        "symfony/asset": "^3.4|^4.0"
     },
     "autoload": {
-        "psr-4": { "Sg\\DatatablesBundle\\": "" }
+        "psr-4": {
+            "Sg\\DatatablesBundle\\": ""
+        }
     }
 }

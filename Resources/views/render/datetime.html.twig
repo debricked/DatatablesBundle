@@ -14,26 +14,20 @@
     id="{{ datetime_id_selector }}"
 {%- endset -%}
 
+{%- set data_datatime -%}
+    data-datatables-extension="moment"
+    data-datatables-selector="datetime_id_selector"
+    data-datatables-moment-value="{{ data|date('U') }}"
+    data-datatables-moment-format="{%- if timeago is same as(false) -%}{{ date_format }}{% else %}fromNow{% endif %}"
+{%- endset -%}
+
 {% if column_class_editable_selector is defined %}
-    <div {{ datetime_selector }} class="{{ column_class_editable_selector }}" data-pk="{{ pk }}" {% if path is not same as(null) %}data-path="{{ path }}"{% endif %}></div>
+    <div {{ datetime_selector }} {{ data_datatime }} class="{{ column_class_editable_selector }}"
+                                                     data-pk="{{ pk }}" {% if path is not same as(null) %}data-path="{{ path }}"{% endif %}></div>
 {% else %}
-    <div {{ datetime_selector }}>
+    <div {{ datetime_selector }} {{ data_datatime }}>
         {% if data is same as(null) and default_content is not same as(null) %}
             {{ default_content }}
         {% endif %}
     </div>
-{% endif %}
-
-{% if data is not same as(null) %}
-    <script type="text/javascript">
-        $(function() {
-            moment.locale("{{ app.request.locale }}");
-
-            {% if timeago is same as(false) %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
-            {% else %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
-            {% endif %}
-        });
-    </script>
 {% endif %}

@@ -1,0 +1,15 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if column.filter.cancelButton is same as(true) %}
+    <button type="button"
+            id="{{ cancel_button_id_selector }}"
+            class="btn btn-default btn-xs"
+            data-datatables-filter="cancel"
+    >&times;</button>
+{% endif %}

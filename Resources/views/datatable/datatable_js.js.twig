@@ -1,0 +1,162 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+
+/* global $ */
+
+"use strict";
+
+require("daterangepicker");
+require("daterangepicker/daterangepicker.css");
+const moment = require("moment");
+
+const selector = "#sg-datatables-{{ sg_datatables_view.name }}";
+let oTable;
+
+let defaults = {};
+
+let language;
+
+let ajax;
+
+let options;
+
+let features;
+
+let callbacks;
+
+let extensions;
+
+let columns;
+
+let initialSearch;
+
+let exports = module.exports = {
+
+    drawTable(pipeline) {
+        if (pipeline > 0) {
+            oTable.clearPipeline().draw();
+        }
+        else {
+            oTable.draw();
+        }
+    },
+
+    postCreateDatatable(pipeline, options) {
+        {% for column in sg_datatables_view.columnBuilder.columns %}
+        {% if column.renderPostCreateDatatableJsContent is not null %}
+        {{ column.renderPostCreateDatatableJsContent|raw }}
+        {% endif %}
+        {% endfor %}
+        moment.locale($("#{{ sg_datatables_view.name }}-locale").text());
+        $(selector).find("[data-datatables-extension='moment']").each(function (index, element) {
+            let $element = $(element);
+            if ($element.attr("data-datatables-moment-format") !== "fromNow") {
+                $element.html(moment.unix($element.attr("data-datatables-moment-value")).format($element.attr("data-datatables-moment-format")));
+            }
+            else {
+                $element.html(moment.unix($element.attr("data-datatables-moment-value")).fromNow());
+            }
+        });
+        $(selector).find("[data-datatables-filter='daterange']").each(function (index, element) {
+            let $element = $(element);
+            $element.daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: "{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}",
+                    applyLabel: "{{ 'sg.datatables.daterange.apply'|trans({}, 'messages') }}",
+                    cancelLabel: "{{ 'sg.datatables.daterange.cancel'|trans({}, 'messages') }}",
+                    daysOfWeek: moment.weekdaysMin(),
+                    monthNames: moment.monthsShort(),
+                    firstDay: moment.localeData().firstDayOfWeek()
+                }
+            }).on('cancel.daterangepicker', function () {
+                $(this).val('');
+                $(this).change();
+            })
+                .on('apply.daterangepicker', function (ev, picker) {
+                    $(this).val(picker.startDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'sg.datatables.daterange.format'|trans({}, 'messages') }}"));
+                    $(this).change();
+                });
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+        $(selector).find("[data-datatables-filter='select']").each(function (index, element) {
+            let $element = $(element);
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+        $(selector).find("[data-datatables-filter='input']").each(function (index, element) {
+            let $element = $(element);
+            exports.initialiseClearButton($element.parent(), $element);
+        });
+        {#  register handlers for individual filtering #}
+        if (options.hasOwnProperty("individualFiltering") === true && options.individualFiltering === true) {
+            {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+        }
+    },
+
+    initialiseClearButton($container, $input) {
+        $container.find("[data-datatables-filter='cancel']").each(function (index, clearButton) {
+            $(clearButton).click(function () {
+                if ($input.val().length !== 0) {
+                    $input
+                        .val('')
+                        .change();
+                }
+            });
+        });
+    },
+
+    createDatatable() {
+        if ($(selector).length === 0) {
+            console.log(`No element matching DataTables selector ${selector} exist!`);
+            return;
+        }
+
+        language = JSON.parse($("#{{ sg_datatables_view.name }}-language").text());
+        ajax = JSON.parse($("#{{ sg_datatables_view.name }}-ajax").text());
+        options = JSON.parse($("#{{ sg_datatables_view.name }}-options").text());
+        features = JSON.parse($("#{{ sg_datatables_view.name }}-features").text());
+        callbacks = JSON.parse($("#{{ sg_datatables_view.name }}-callbacks").text());
+        extensions = JSON.parse($("#{{ sg_datatables_view.name }}-extensions").text());
+        columns = JSON.parse($("#{{ sg_datatables_view.name }}-columns").text());
+        initialSearch = JSON.parse($("#{{ sg_datatables_view.name }}-initial-search").text());
+
+        const pipeline = ajax.pipeline;
+        if (pipeline > 0) {
+            ajax.ajax = $.fn.dataTable.pipeline(ajax.ajax);
+        }
+        delete ajax.pipeline;
+
+        $.extend(defaults, language);
+        $.extend(defaults, ajax);
+        $.extend(defaults, options);
+        $.extend(defaults, features);
+        $.extend(defaults, callbacks);
+        $.extend(defaults, extensions);
+        $.extend(defaults, columns);
+        $.extend(defaults, initialSearch);
+
+        if (!$.fn.dataTable.isDataTable(selector)) {
+            $(selector)
+            {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+            ;
+
+            oTable = $(selector)
+                .DataTable(defaults)
+                .on('draw.dt', function () {
+                    exports.postCreateDatatable(pipeline, options);
+                })
+            ;
+        }
+    }
+
+    {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
+    {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
+    {% endif %}
+
+};

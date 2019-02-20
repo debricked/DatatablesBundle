@@ -41,4 +41,11 @@ interface FilterInterface
      * @return Andx
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter);
+
+    /**
+     * Get initialSearch.
+     *
+     * @return null|string
+     */
+    public function getInitialSearch();
 }

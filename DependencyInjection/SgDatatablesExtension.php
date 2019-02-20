@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
+use Sg\DatatablesBundle\Datatable\AbstractDatatable;
+use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -36,6 +38,7 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
+        $container->registerForAutoconfiguration(DatatableInterface::class)->addTag('sg.datatable');
     }
 
     /**

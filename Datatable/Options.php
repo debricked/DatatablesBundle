@@ -267,31 +267,33 @@ class Options
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'defer_loading' => null,
-            'display_start' => null,
-            'dom' => null,
-            'length_menu' => null,
-            'order' => null,
-            'order_cells_top' => null,
-            'order_classes' => null,
-            'order_fixed' => null,
-            'order_multi' => null,
-            'page_length' => null,
-            'paging_type' => null,
-            'renderer' => null,
-            'retrieve' => null,
-            'row_id' => null,
-            'scroll_collapse' => null,
-            'search_delay' => null,
-            'state_duration' => null,
-            'stripe_classes' => null,
-            'classes' => Style::BASE_STYLE,
-            'individual_filtering' => false,
-            'individual_filtering_position' => 'head',
-            'search_in_non_visible_columns' => false,
-            'global_search_type' => 'like',
-        ));
+        $resolver->setDefaults(
+            [
+                'defer_loading' => null,
+                'display_start' => null,
+                'dom' => null,
+                'length_menu' => null,
+                'order' => null,
+                'order_cells_top' => null,
+                'order_classes' => null,
+                'order_fixed' => null,
+                'order_multi' => null,
+                'page_length' => null,
+                'paging_type' => null,
+                'renderer' => null,
+                'retrieve' => null,
+                'row_id' => null,
+                'scroll_collapse' => null,
+                'search_delay' => null,
+                'state_duration' => null,
+                'stripe_classes' => null,
+                'classes' => Style::BASE_STYLE,
+                'individual_filtering' => false,
+                'individual_filtering_position' => 'head',
+                'search_in_non_visible_columns' => false,
+                'global_search_type' => 'like',
+            ]
+        );
 
         $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));
         $resolver->setAllowedTypes('display_start', array('null', 'int'));
@@ -318,7 +320,10 @@ class Options
         $resolver->setAllowedTypes('global_search_type', 'string');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
-        $resolver->setAllowedValues('global_search_type', array('like', '%like', 'like%', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues(
+            'global_search_type',
+            array('like', '%like', 'like%', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull')
+        );
 
         return $this;
     }
@@ -334,10 +339,6 @@ class Options
      */
     public function getDeferLoading()
     {
-        if (is_array($this->deferLoading)) {
-            return $this->optionToJson($this->deferLoading);
-        }
-
         return $this->deferLoading;
     }
 
@@ -408,12 +409,8 @@ class Options
      *
      * @return null|array
      */
-    public function getLengthMenu()
+    public function getLengthMenu(): ?array
     {
-        if (is_array($this->lengthMenu)) {
-            return $this->optionToJson($this->lengthMenu);
-        }
-
         return $this->lengthMenu;
     }
 
@@ -438,10 +435,6 @@ class Options
      */
     public function getOrder()
     {
-        if (is_array($this->order)) {
-            return $this->optionToJson($this->order);
-        }
-
         return $this->order;
     }
 
@@ -512,12 +505,8 @@ class Options
      *
      * @return null|array
      */
-    public function getOrderFixed()
+    public function getOrderFixed(): ?array
     {
-        if (is_array($this->orderFixed)) {
-            return $this->optionToJson($this->orderFixed);
-        }
-
         return $this->orderFixed;
     }
 
@@ -756,12 +745,8 @@ class Options
      *
      * @return null|array
      */
-    public function getStripeClasses()
+    public function getStripeClasses(): ?array
     {
-        if (is_array($this->stripeClasses)) {
-            return $this->optionToJson($this->stripeClasses);
-        }
-
         return $this->stripeClasses;
     }
 

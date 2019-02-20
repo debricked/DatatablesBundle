@@ -1,0 +1,7 @@
+.idea
+vendor
+composer.lock
+/Tests/Application/cache/
+/Tests/Application/logs/
+/Tests/Application/var/app.db
+/Tests/assets/js/Datatable/*

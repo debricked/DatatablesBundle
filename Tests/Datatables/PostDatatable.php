@@ -12,7 +12,9 @@
 namespace Sg\DatatablesBundle\Tests\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Tests\Entity\Post;
 
 /**
  * Class PostDatatable
@@ -26,23 +28,57 @@ class PostDatatable extends AbstractDatatable
      */
     public function buildDatatable(array $options = array())
     {
-        $this->ajax->set(array(
-            'url' => '',
-            'type' => 'GET',
-        ));
+        $this->ajax->set(
+            array(
+                'url' => $this->router->generate('app.datatable.post'),
+                'type' => 'GET',
+            )
+        );
 
-        $this->options->set(array(
-            'individual_filtering' => true,
-        ));
+        $this->options->set(
+            array(
+                'individual_filtering' => true,
+            )
+        );
 
         $this->columnBuilder
-            ->add('id', Column::class, array(
-                'title' => 'Id',
-            ))
-            ->add('title', Column::class, array(
-                'title' => 'Title',
-            ))
-        ;
+            ->add(
+                'id',
+                Column::class,
+                array(
+                    'title' => 'Id',
+                )
+            )
+            ->add(
+                'title',
+                Column::class,
+                array(
+                    'title' => 'Title',
+                )
+            )
+            ->add(
+                null,
+                ActionColumn::class,
+                [
+                    'title' => $this->translator->trans('datatables.actions.title'),
+                    'actions' => [
+                        [
+                            'icon' => 'fa fa-trash-o',
+                            'render_if' => function () {
+                                return $this->authorizationChecker->isGranted(Role::DEFAULT_ROLE_COMPANY_ADMIN);
+                            },
+                            'label' => 'Delete',
+                            'route' => 'app.datatable.post',
+                            'attributes' => [
+                                'rel' => 'tooltip',
+                                'title' => $this->translator->trans('datatables.actions.delete'),
+                                'class_name' => 'btn btn-danger btn-xs delete',
+                                'role' => 'button',
+                            ],
+                        ],
+                    ],
+                ]
+            );
     }
 
     /**
@@ -50,7 +86,7 @@ class PostDatatable extends AbstractDatatable
      */
     public function getEntity()
     {
-        return 'AppBundle\Entity\Post';
+        return Post::class;
     }
 
     /**

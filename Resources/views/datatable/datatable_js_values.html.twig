@@ -1,0 +1,26 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+
+<div id="{{ sg_datatables_view.name }}-language" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeLanguage', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-ajax" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeAjax', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-options" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeOptions', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-features" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeFeatures', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-callbacks" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeCallbacks', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-extensions" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeExtensions', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-columns" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeColumns', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-initial-search" class="hidden">{{ render(controller('Sg\\DatatablesBundle\\Controller\\JsonController::encodeInitialSearch', {'datatable': sg_datatables_view})) }}</div>
+
+<div id="{{ sg_datatables_view.name }}-locale" class="hidden">{{ app.request.locale|slice(0,2) }}</div>

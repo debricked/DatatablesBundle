@@ -1,25 +1,18 @@
 # SgDatatablesBundle
 
-[![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
-
-[![Build Status](https://travis-ci.org/stwe/DatatablesBundle.svg?branch=master)](https://travis-ci.org/stwe/DatatablesBundle)
-
-[![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
+[![Build Status](https://travis-ci.org/debricked/DatatablesBundle.svg?branch=master)](https://travis-ci.org/debricked/DatatablesBundle)
+[![Latest Stable Version](https://poser.pugx.org/debricked/datatablesbundle/v/stable)](https://packagist.org/packages/debricked/datatablesbundle)
+[![Total Downloads](https://poser.pugx.org/debricked/datatablesbundle/downloads)](https://packagist.org/packages/debricked/datatablesbundle)
+[![Latest Unstable Version](https://poser.pugx.org/debricked/datatablesbundle/v/unstable)](https://packagist.org/packages/debricked/datatablesbundle)
+[![License](https://poser.pugx.org/debricked/datatablesbundle/license)](https://packagist.org/packages/debricked/datatablesbundle)
 
 ## A new version is available
 
-**[The features of v1.0](https://github.com/stwe/DatatablesBundle/blob/master/FEATURES.md)**
+**[The features of v1.0](https://github.com/debricked/DatatablesBundle/blob/master/FEATURES.md)**
 
 ## Documentation
 
-[Documentation for v1.0](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
-
-[Demo Application for v1.0](https://github.com/stwe/DtBundleDemo10)
-
-## Info about PostgreSQL
-
-**Hey folks. Bad news: I'm not working with PostgreSQL. I have no idea about it and therefore can not write any good software supporting PostgreSQL. 
-I also don' t like it. For those reasons I will close all issues on this subject. Feel free to forke the bundle. Thanks for your understanding.**
+[Documentation for v1.0](https://github.com/debricked/DatatablesBundle/blob/master/Resources/doc/index.md)
 
 ## Friendly License
 

@@ -139,4 +139,11 @@ interface DatatableInterface
      * @return string
      */
     public function getUniqueName();
+
+    /**
+     * Sets given locale to routing context and translator.
+     *
+     * @param string $locale
+     */
+    public function setLocale(string $locale);
 }

@@ -24,6 +24,38 @@ interface ColumnInterface
     const LAST_POSITION = -1;
 
     /**
+     * Get data.
+     *
+     * @return null|string
+     */
+    public function getData();
+
+    /**
+     * Set data.
+     *
+     * @param null|string $data
+     *
+     * @return $this
+     */
+    public function setData($data);
+
+    /**
+     * Get index.
+     *
+     * @return int
+     */
+    public function getIndex();
+
+    /**
+     * Set index.
+     *
+     * @param int $index
+     *
+     * @return $this
+     */
+    public function setIndex($index);
+
+    /**
      * Validates $dql. Normally a non-empty string is expected.
      *
      * @param mixed $dql
@@ -64,9 +96,9 @@ interface ColumnInterface
     /**
      * Get the template, in which all DataTables-Columns-Options set.
      *
-     * @return string
+     * @return array
      */
-    public function getOptionsTemplate();
+    public function getOptionsArray(): array;
 
     /**
      * Sometimes it is necessary to add some special data to the output array.
