@@ -160,7 +160,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatablesRenderJsValues(Twig_Environment $twig, DatatableInterface $datatable): string
     {
         return $twig->render(
-            '@SgDatatablesBundle/datatable/datatable_js_values.html.twig',
+            '@SgDatatables/datatable/datatable_js_values.html.twig',
             array(
                 'sg_datatables_view' => $datatable,
             )
