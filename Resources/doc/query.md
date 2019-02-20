@@ -44,14 +44,11 @@ public function indexAction(Request $request)
 {
     // ...
 
-    if ($isAjax) {
+    if ($request->isXmlHttpRequest()) {
         $responseService = $this->get('sg_datatables.response');
         $responseService->setDatatable($datatable);
 
         $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
-        $datatableQueryBuilder->buildQuery();
-
-        //dump($datatableQueryBuilder->getQb()->getDQL()); die();
         
         /** @var QueryBuilder $qb */
         $qb = $datatableQueryBuilder->getQb();

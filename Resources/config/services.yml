@@ -24,7 +24,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
-            - '@translator.default'
+            - '@translator'
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
@@ -41,7 +41,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
-            - '@translator.default'
+            - '@translator'
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'

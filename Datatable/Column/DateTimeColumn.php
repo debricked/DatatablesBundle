@@ -64,13 +64,15 @@ class DateTimeColumn extends AbstractColumn implements IsEditableInterface, Filt
     {
         $path = Helper::getDataPropertyPath($this->data);
 
-        if (true === $this->isEditableContentRequired($row)) {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-        } else {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
-        }
+        if ($this->accessor->isReadable($row, $path)) {
+            if (true === $this->isEditableContentRequired($row)) {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+            } else {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+            }
 
-        $this->accessor->setValue($row, $path, $content);
+            $this->accessor->setValue($row, $path, $content);
+        }
 
         return $this;
     }
@@ -83,27 +85,29 @@ class DateTimeColumn extends AbstractColumn implements IsEditableInterface, Filt
         $value = null;
         $path = Helper::getDataPropertyPath($this->data, $value);
 
-        $entries = $this->accessor->getValue($row, $path);
+        if ($this->accessor->isReadable($row, $path)) {
+            $entries = $this->accessor->getValue($row, $path);
 
-        if (count($entries) > 0) {
-            foreach ($entries as $key => $entry) {
-                $currentPath = $path.'['.$key.']'.$value;
-                $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+            if (count($entries) > 0) {
+                foreach ($entries as $key => $entry) {
+                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
-                if (true === $this->isEditableContentRequired($row)) {
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
-                } else {
-                    $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+                    if (true === $this->isEditableContentRequired($row)) {
+                        $content = $this->renderTemplate(
+                            $this->accessor->getValue($row, $currentPath),
+                            $row[$this->editable->getPk()],
+                            $currentObjectPath
+                        );
+                    } else {
+                        $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+                    }
+
+                    $this->accessor->setValue($row, $currentPath, $content);
                 }
-
-                $this->accessor->setValue($row, $currentPath, $content);
+            } else {
+                // no placeholder - leave this blank
             }
-        } else {
-            // no placeholder - leave this blank
         }
 
         return $this;
@@ -114,7 +118,7 @@ class DateTimeColumn extends AbstractColumn implements IsEditableInterface, Filt
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:datetime.html.twig';
+        return '@SgDatatables/render/datetime.html.twig';
     }
 
     /**
@@ -124,7 +128,7 @@ class DateTimeColumn extends AbstractColumn implements IsEditableInterface, Filt
     {
         if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
-                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                '@SgDatatables/column/column_post_create_dt.js.twig',
                 array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,

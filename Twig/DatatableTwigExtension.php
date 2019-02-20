@@ -121,7 +121,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatablesRender(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
-            'SgDatatablesBundle:datatable:datatable.html.twig',
+            '@SgDatatables/datatable/datatable.html.twig',
             array(
                 'sg_datatables_view' => $datatable,
             )
@@ -139,7 +139,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatablesRenderHtml(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
-            'SgDatatablesBundle:datatable:datatable_html.html.twig',
+            '@SgDatatables/datatable/datatable_html.html.twig',
             array(
                 'sg_datatables_view' => $datatable,
             )
@@ -160,7 +160,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatablesRenderJsValues(Twig_Environment $twig, DatatableInterface $datatable): string
     {
         return $twig->render(
-            'SgDatatablesBundle:datatable:datatable_js_values.html.twig',
+            '@SgDatatables/datatable/datatable_js_values.html.twig',
             array(
                 'sg_datatables_view' => $datatable,
             )
@@ -250,7 +250,7 @@ class DatatableTwigExtension extends Twig_Extension
         }
 
         return $twig->render(
-            'SgDatatablesBundle:datatable:multiselect_actions.html.twig',
+            '@SgDatatables/datatable/multiselect_actions.html.twig',
             array(
                 'actions' => $actions,
                 'route_parameters' => $parameters,

@@ -11,7 +11,9 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Doctrine\DBAL\DBALException;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\Filter\AbstractFilter;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Options;
@@ -205,10 +207,10 @@ class DatatableQueryBuilder
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
-        $this->entityShortName = $this->getEntityShortName($this->metadata);
+        $this->entityShortName = $this->getEntityShortName($this->metadata, $this->em);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
-        $this->qb = $this->em->createQueryBuilder();
+        $this->qb = $this->em->createQueryBuilder()->from($this->entityName, $this->entityShortName);
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
         $this->columns = $datatable->getColumnBuilder()->getColumns();
@@ -308,16 +310,12 @@ class DatatableQueryBuilder
     /**
      * Build query.
      *
+     * @deprecated No longer used by internal code.
+     *
      * @return $this
      */
     public function buildQuery()
     {
-        $this->setSelectFrom();
-        $this->setJoins($this->qb);
-        $this->setWhere($this->qb);
-        $this->setOrderBy();
-        $this->setLimit();
-
         return $this;
     }
 
@@ -345,6 +343,24 @@ class DatatableQueryBuilder
         return $this;
     }
 
+    /**
+     * Get the built qb.
+     *
+     * @return QueryBuilder
+     */
+    public function getBuiltQb()
+    {
+        $qb = clone $this->qb;
+
+        $this->setSelectFrom($qb);
+        $this->setJoins($qb);
+        $this->setWhere($qb);
+        $this->setOrderBy($qb);
+        $this->setLimit($qb);
+
+        return $qb;
+    }
+
     //-------------------------------------------------
     // Private/Public - Setup query
     //-------------------------------------------------
@@ -352,19 +368,19 @@ class DatatableQueryBuilder
     /**
      * Set select from.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      */
-    private function setSelectFrom()
+    private function setSelectFrom(QueryBuilder $qb)
     {
         foreach ($this->selectColumns as $key => $value) {
             if (false === empty($key)) {
-                $this->qb->addSelect('partial '.$key.'.{'.implode(',', $value).'}');
+                $qb->addSelect('partial '.$key.'.{'.implode(',', $value).'}');
             } else {
-                $this->qb->addSelect($value);
+                $qb->addSelect($value);
             }
         }
-
-        $this->qb->from($this->entityName, $this->entityShortName);
 
         return $this;
     }
@@ -397,36 +413,25 @@ class DatatableQueryBuilder
     {
         // global filtering
         if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
-            $globalSearch = $this->requestParams['search']['value'];
-
             $orExpr = $qb->expr()->orX();
+
+            $globalSearch = $this->requestParams['search']['value'];
             $globalSearchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchableColumn($column)) {
+                    /** @var AbstractFilter $filter */
+                    $filter = $this->accessor->getValue($column, 'filter');
                     $searchType = $globalSearchType;
                     $searchField = $this->searchColumns[$key];
-                    // Subqueries and arithmetics fields can't be search with LIKE
-                    if ($column->isCustomDql() && ('string' != $column->getTypeOfField()) || preg_match('/SELECT .+ FROM .+/', $searchField)) {
-                        if (!is_numeric($globalSearch)) {
-                            continue;
-                        }
-                        $globalSearch = floatval($globalSearch);
-                        switch ($searchType) {
-                            case 'like':
-                                $searchType = 'eq';
-                                break;
-                            case 'notLike':
-                                $searchType = 'neq';
-                                break;
-                        }
-                    }
-                    $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $globalSearch, $key);
+                    $searchValue = $globalSearch;
+                    $searchTypeOfField = $column->getTypeOfField();
+                    $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $key);
                 }
             }
 
             if ($orExpr->count() > 0) {
-                $qb->where($orExpr);
+                $qb->andWhere($orExpr);
             }
         }
 
@@ -448,7 +453,8 @@ class DatatableQueryBuilder
                         /** @var FilterInterface $filter */
                         $filter = $this->accessor->getValue($column, 'filter');
                         $searchField = $this->searchColumns[$key];
-                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
+                        $searchTypeOfField = $column->getTypeOfField();
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
                     }
                 }
             }
@@ -465,9 +471,11 @@ class DatatableQueryBuilder
      * Ordering.
      * Construct the ORDER BY clause for server-side processing SQL query.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      */
-    private function setOrderBy()
+    private function setOrderBy(QueryBuilder $qb)
     {
         if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
             $counter = count($this->requestParams['order']);
@@ -480,7 +488,7 @@ class DatatableQueryBuilder
                     $columnName = $this->orderColumns[$columnIdx];
                     $orderDirection = $this->requestParams['order'][$i]['dir'];
 
-                    $this->qb->addOrderBy($columnName, $orderDirection);
+                    $qb->addOrderBy($columnName, $orderDirection);
                 }
             }
         }
@@ -492,14 +500,16 @@ class DatatableQueryBuilder
      * Paging.
      * Construct the LIMIT clause for server-side processing SQL query.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      * @throws Exception
      */
-    private function setLimit()
+    private function setLimit(QueryBuilder $qb)
     {
         if (true === $this->features->getPaging() || null === $this->features->getPaging()) {
             if (isset($this->requestParams['start']) && DatatableQueryBuilder::DISABLE_PAGINATION != $this->requestParams['length']) {
-                $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
+                $qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
             }
         } elseif ($this->ajax->getPipeline() > 0) {
             throw new Exception('DatatableQueryBuilder::setLimit(): For disabled paging, the ajax Pipeline-Option must be turned off.');
@@ -515,9 +525,10 @@ class DatatableQueryBuilder
      */
     public function execute()
     {
-        $query = $this->qb->getQuery();
-        $query->setHydrationMode(Query::HYDRATE_ARRAY)
-            ->useQueryCache($this->useQueryCache);
+        $qb = $this->getBuiltQb();
+
+        $query = $qb->getQuery();
+        $query->setHydrationMode(Query::HYDRATE_ARRAY)->useQueryCache($this->useQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useResultCacheArgs);
 
         return $query;
@@ -530,15 +541,17 @@ class DatatableQueryBuilder
      */
     public function getCountAllResults()
     {
-        $qb = $this->em->createQueryBuilder();
+        $qb = clone $this->qb;
         $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
-        $qb->from($this->entityName, $this->entityShortName);
+        $qb->resetDQLPart('orderBy');
+        $this->setJoins($qb);
+
         $query = $qb->getQuery();
         $query->useQueryCache($this->useCountQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useCountResultCacheArgs);
 
-        return !$qb->getDQLPart('groupBy') ?
-            (int) $query->getSingleScalarResult()
+        return !$qb->getDQLPart('groupBy')
+            ? (int) $query->getSingleScalarResult()
             : count($query->getResult());
     }
 
@@ -745,12 +758,21 @@ class DatatableQueryBuilder
      * Get entity short name.
      *
      * @param ClassMetadata $metadata
+     * @param EntityManagerInterface $entityManager
      *
      * @return string
      */
-    private function getEntityShortName(ClassMetadata $metadata)
+    private function getEntityShortName(ClassMetadata $metadata, EntityManagerInterface $entityManager)
     {
-        return strtolower($metadata->getReflectionClass()->getShortName());
+        $entityShortName = strtolower($metadata->getReflectionClass()->getShortName());
+        try {
+            $reservedKeywordsList = $entityManager->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
+            $isReservedKeyword = $reservedKeywordsList->isKeyword($entityShortName);
+        } catch (DBALException $exception) {
+            $isReservedKeyword = false;
+        }
+
+        return $isReservedKeyword ? "_{$entityShortName}" : $entityShortName;
     }
 
     /**
@@ -783,71 +805,5 @@ class DatatableQueryBuilder
         }
 
         return $searchColumn;
-    }
-
-    /**
-     * Set Orx Expression.
-     *
-     * @param Orx          $orExpr
-     * @param QueryBuilder $qb
-     * @param string       $searchType
-     * @param string       $searchField
-     * @param mixed        $searchValue
-     * @param integer      $key
-     *
-     * @return $this
-     */
-    private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
-    {
-        switch ($searchType) {
-            case 'like':
-                $orExpr->add($qb->expr()->like($searchField, '?'.$key));
-                $qb->setParameter($key, '%'.$searchValue.'%');
-                break;
-            case 'notLike':
-                $orExpr->add($qb->expr()->notLike($searchField, '?'.$key));
-                $qb->setParameter($key, '%'.$searchValue.'%');
-                break;
-            case 'eq':
-                $orExpr->add($qb->expr()->eq($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'neq':
-                $orExpr->add($qb->expr()->neq($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'lt':
-                $orExpr->add($qb->expr()->lt($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'lte':
-                $orExpr->add($qb->expr()->lte($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'gt':
-                $orExpr->add($qb->expr()->gt($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'gte':
-                $orExpr->add($qb->expr()->gte($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'in':
-                $orExpr->add($qb->expr()->in($searchField, '?'.$key));
-                $qb->setParameter($key, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $orExpr->add($qb->expr()->notIn($searchField, '?'.$key));
-                $qb->setParameter($key, explode(',', $searchValue));
-                break;
-            case 'isNull':
-                $orExpr->add($qb->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $orExpr->add($qb->expr()->isNotNull($searchField));
-                break;
-        }
-
-        return $this;
     }
 }

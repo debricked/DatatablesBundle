@@ -127,6 +127,20 @@ interface DatatableInterface
     public function getName();
 
     /**
+     * Returns the unique id of this datatable view.
+     *
+     * @return int
+     */
+    public function getUniqueId();
+
+    /**
+     * Returns the unique name of this datatable view.
+     *
+     * @return string
+     */
+    public function getUniqueName();
+
+    /**
      * Sets given locale to routing context and translator.
      *
      * @param string $locale

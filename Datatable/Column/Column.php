@@ -42,12 +42,13 @@ class Column extends AbstractColumn implements IsEditableInterface, FilterableIn
      */
     public function renderSingleField(array &$row)
     {
-        if ($this->isEditableContentRequired($row)) {
-            $path = Helper::getDataPropertyPath($this->data);
+        $path = Helper::getDataPropertyPath($this->data);
 
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-
-            $this->accessor->setValue($row, $path, $content);
+        if ($this->accessor->isReadable($row, $path)) {
+            if ($this->isEditableContentRequired($row)) {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+                $this->accessor->setValue($row, $path, $content);
+            }
         }
 
         return $this;
@@ -58,31 +59,34 @@ class Column extends AbstractColumn implements IsEditableInterface, FilterableIn
      */
     public function renderToMany(array &$row)
     {
-        if ($this->isEditableContentRequired($row)) {
-            // e.g. comments[ ].createdBy.username
-            //     => $path = [comments]
-            //     => $value = [createdBy][username]
-            $value = null;
-            $path = Helper::getDataPropertyPath($this->data, $value);
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
 
-            $entries = $this->accessor->getValue($row, $path);
+        if ($this->accessor->isReadable($row, $path)) {
+            if ($this->isEditableContentRequired($row)) {
+                // e.g. comments[ ].createdBy.username
+                //     => $path = [comments]
+                //     => $value = [createdBy][username]
 
-            if (count($entries) > 0) {
-                foreach ($entries as $key => $entry) {
-                    $currentPath = $path.'['.$key.']'.$value;
-                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+                $entries = $this->accessor->getValue($row, $path);
 
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
+                if (count($entries) > 0) {
+                    foreach ($entries as $key => $entry) {
+                        $currentPath = $path . '[' . $key . ']' . $value;
+                        $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
-                    $this->accessor->setValue($row, $currentPath, $content);
+                        $content = $this->renderTemplate(
+                            $this->accessor->getValue($row, $currentPath),
+                            $row[$this->editable->getPk()],
+                            $currentObjectPath
+                        );
+
+                        $this->accessor->setValue($row, $currentPath, $content);
+                    }
                 }
-            }
             else {
-                // no placeholder - leave this blank
+                    // no placeholder - leave this blank
+                }
             }
         }
 
@@ -94,7 +98,7 @@ class Column extends AbstractColumn implements IsEditableInterface, FilterableIn
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:column.html.twig';
+        return '@SgDatatables/render/column.html.twig';
     }
 
     /**
@@ -104,7 +108,7 @@ class Column extends AbstractColumn implements IsEditableInterface, FilterableIn
     {
         if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
-                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                '@SgDatatables/column/column_post_create_dt.js.twig',
                 array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,

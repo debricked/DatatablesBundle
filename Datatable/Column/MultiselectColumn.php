@@ -126,7 +126,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:multiselect.html.twig';
+        return '@SgDatatables/render/multiselect.html.twig';
     }
 
     /**
@@ -198,8 +198,7 @@ class MultiselectColumn extends ActionColumn
     {
         if (count($actions) > 0) {
             foreach ($actions as $action) {
-                $newAction = new MultiselectAction($this->datatableName);
-                $this->actions[] = $newAction->set($action);
+                $this->addAction($action);
             }
         }
         else {
@@ -207,6 +206,21 @@ class MultiselectColumn extends ActionColumn
                 'MultiselectColumn::setActions(): The actions array should contain at least one element.'
             );
         }
+
+        return $this;
+    }
+
+    /**
+     * Add action.
+     *
+     * @param array $action
+     *
+     * @return $this
+     */
+    public function addAction(array $action)
+    {
+        $newAction = new MultiselectAction($this->datatableName);
+        $this->actions[] = $newAction->set($action);
 
         return $this;
     }

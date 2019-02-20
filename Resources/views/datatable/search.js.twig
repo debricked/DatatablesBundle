@@ -31,7 +31,7 @@ let search = $.fn.dataTable.util.throttle(
 
 const inputIndividualFilteringSelector = "tr input.sg-datatables-individual-filtering";
 const selectIndividualFilteringSelector = "tr select.sg-datatables-individual-filtering";
-$(selector).find(inputIndividualFilteringSelector).on("keyup change", search);
+$(selector + '-filterrow').find(inputIndividualFilteringSelector).on("keyup change", search);
 
 const selectSearch = function (event) {
     let searchValue = $(this).val();
@@ -42,7 +42,7 @@ const selectSearch = function (event) {
     exports.drawTable();
 };
 
-$(selector).find(selectIndividualFilteringSelector).on("keyup change", selectSearch);
+$(selector + '-filterrow').find(selectIndividualFilteringSelector).on("keyup change", selectSearch);
 const realFooter = $(selector).parent(".dataTables_scrollBody").next(".dataTables_scrollFoot");
 if (realFooter.length > 0)
 {

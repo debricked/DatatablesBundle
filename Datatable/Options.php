@@ -322,7 +322,7 @@ class Options
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
         $resolver->setAllowedValues(
             'global_search_type',
-            array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull')
+            array('like', '%like', 'like%', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull')
         );
 
         return $this;
