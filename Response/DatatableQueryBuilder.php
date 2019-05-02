@@ -187,6 +187,11 @@ class DatatableQueryBuilder
      */
     private $useCountResultCacheArgs = [false];
 
+    /**
+     * @var bool
+     */
+    private $isBuilt = false;
+
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
@@ -344,12 +349,32 @@ class DatatableQueryBuilder
     }
 
     /**
+     * Set built qb, query won't be internally built again when building response.
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    public function setBuiltQb($qb)
+    {
+        $this->isBuilt = true;
+        $this->qb = $qb;
+
+        return $this;
+    }
+
+    /**
      * Get the built qb.
      *
      * @return QueryBuilder
      */
     public function getBuiltQb()
     {
+        if ($this->isBuilt === true)
+        {
+            return $this->qb;
+        }
+
         $qb = clone $this->qb;
 
         $this->setSelectFrom($qb);
@@ -543,8 +568,12 @@ class DatatableQueryBuilder
     {
         $qb = clone $this->qb;
         $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
-        $qb->resetDQLPart('orderBy');
-        $this->setJoins($qb);
+
+        if ($this->isBuilt === false)
+        {
+            $qb->resetDQLPart('orderBy');
+            $this->setJoins($qb);
+        }
 
         $query = $qb->getQuery();
         $query->useQueryCache($this->useCountQueryCache);
