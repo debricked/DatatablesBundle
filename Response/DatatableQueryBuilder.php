@@ -574,6 +574,11 @@ class DatatableQueryBuilder
             $qb->resetDQLPart('orderBy');
             $this->setJoins($qb);
         }
+        else
+        {
+            $qb->setFirstResult(0);
+            $qb->setMaxResults(null);
+        }
 
         $query = $qb->getQuery();
         $query->useQueryCache($this->useCountQueryCache);
