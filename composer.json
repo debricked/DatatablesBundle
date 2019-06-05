@@ -42,21 +42,22 @@
         "doctrine/doctrine-bundle": "^1.7",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/jsrouting-bundle": "^2.0",
-        "symfony/framework-bundle": "^3.4|^4.0",
+        "symfony/framework-bundle": "^4.1",
         "symfony/maker-bundle": "^1.0.2",
-        "symfony/lock": "^3.4|^4.0",
-        "symfony/options-resolver": "^3.4|^4.0",
-        "symfony/property-access": "^3.4|^4.0",
-        "symfony/security-bundle": "^3.4|^4.0",
-        "symfony/templating": "^3.4|^4.0",
-        "symfony/translation": "^3.4|^4.0",
-        "symfony/twig-bundle": "^3.4|^4.0",
+        "symfony/lock": "^4.1",
+        "symfony/options-resolver": "^4.1",
+        "symfony/property-access": "^4.1",
+        "symfony/security-bundle": "^4.1",
+        "symfony/routing": "^4.1",
+        "symfony/templating": "^4.1",
+        "symfony/translation": "^4.1",
+        "symfony/twig-bundle": "^4.1",
         "twig/twig": "^2.0.0"
     },
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "^2.3",
         "phpunit/phpunit": "^6.0",
-        "symfony/asset": "^3.4|^4.0"
+        "symfony/asset": "^4.1"
     },
     "autoload": {
         "psr-4": {
