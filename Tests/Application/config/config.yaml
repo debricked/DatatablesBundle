@@ -8,20 +8,20 @@ parameters:
 
 framework:
     router:
-        resource: "%kernel.root_dir%/config/routing.yaml"
+        resource: "%kernel.project_dir%/Tests/Application/config/routing.yaml"
         strict_requirements: ~
 
 doctrine:
     dbal:
         driver:   pdo_sqlite
-        host:     "sqlite:///%kernel.root_dir%/var/app.db"
+        host:     "sqlite:///%kernel.project_dir%/var/app.db"
     orm:
         auto_mapping: true
         mappings:
             test_mapping:
                 type: annotation
                 prefix: Sg\DatatablesBundle\Tests\Entity\
-                dir: '%kernel.root_dir%/../Entity/'
+                dir: '%kernel.project_dir%/Tests/Entity/'
                 is_bundle: false
 
 security:
