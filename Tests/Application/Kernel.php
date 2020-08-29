@@ -46,7 +46,7 @@ class Kernel extends \Symfony\Component\HttpKernel\Kernel implements CompilerPas
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         /* @noinspection PhpUnhandledExceptionInspection */
-        $loader->load($this->getRootDir().'/config/config.yaml');
+        $loader->load($this->getProjectDir().'/Tests/Application/config/config.yaml');
     }
 
     /**

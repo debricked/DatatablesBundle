@@ -91,7 +91,7 @@ class DatatableResponse
         $val = $this->validateColumnsPositions($datatable);
         if (is_int($val)) {
             throw new Exception("DatatableResponse::setDatatable(): The Column with the index $val is on a not allowed position.");
-        };
+        }
 
         $this->datatable = $datatable;
         $this->datatableQueryBuilder = null;

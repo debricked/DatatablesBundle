@@ -95,7 +95,7 @@ let exports = module.exports = {
         });
         {#  register handlers for individual filtering #}
         if (options.hasOwnProperty("individualFiltering") === true && options.individualFiltering === true) {
-            {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+            {% include '@SgDatatables/datatable/search.js.twig' %}
         }
     },
 
@@ -143,7 +143,7 @@ let exports = module.exports = {
 
         if (!$.fn.dataTable.isDataTable(selector)) {
             $(selector)
-            {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+            {% include '@SgDatatables/datatable/events.html.twig' %}
             ;
 
             oTable = $(selector)

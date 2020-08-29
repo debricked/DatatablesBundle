@@ -11,13 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Factory;
-
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
-use Twig_Environment;
+use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Exception;
+use Sg\DatatablesBundle\Datatable\Factory;
+use Twig\Environment;
 
 /**
  * Class ColumnBuilder
@@ -36,7 +35,7 @@ class ColumnBuilder
     /**
      * The Twig Environment.
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -91,11 +90,11 @@ class ColumnBuilder
      * ColumnBuilder constructor.
      *
      * @param ClassMetadata          $metadata
-     * @param Twig_Environment       $twig
+     * @param Environment            $twig
      * @param string                 $datatableName
      * @param EntityManagerInterface $em
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em)
+    public function __construct(ClassMetadata $metadata, Environment $twig, $datatableName, EntityManagerInterface $em)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
@@ -211,7 +210,9 @@ class ColumnBuilder
         try {
             $metadata = $this->em->getMetadataFactory()->getMetadataFor($entityName);
         } catch (MappingException $e) {
-            throw new Exception('DatatableQueryBuilder::getMetadata(): Given object '.$entityName.' is not a Doctrine Entity.');
+            throw new Exception(
+                'DatatableQueryBuilder::getMetadata(): Given object '.$entityName.' is not a Doctrine Entity.'
+            );
         }
 
         return $metadata;
@@ -228,9 +229,8 @@ class ColumnBuilder
     private function getMetadataFromAssociation($association, ClassMetadata $metadata)
     {
         $targetClass = $metadata->getAssociationTargetClass($association);
-        $targetMetadata = $this->getMetadata($targetClass);
 
-        return $targetMetadata;
+        return $this->getMetadata($targetClass);
     }
 
     /**
@@ -270,7 +270,8 @@ class ColumnBuilder
         if (!isset($options['dql'])) {
             $column->setCustomDql(false);
             $column->setDql($dql);
-        } else {
+        }
+        else {
             $column->setCustomDql(true);
         }
 
@@ -315,13 +316,15 @@ class ColumnBuilder
                     $column->addTypeOfAssociation($metadata->getAssociationMapping($currentPart)['type']);
                     $metadata = $this->getMetadataFromAssociation($currentPart, $metadata);
                 }
-            } else {
+            }
+            else {
                 $column->setTypeOfAssociation(null);
             }
 
             // set the type of the field
             $this->setTypeOfField($metadata, $column, $parts[0]);
-        } else {
+        }
+        else {
             $column->setTypeOfAssociation(null);
             $column->setOriginalTypeOfField(null);
         }

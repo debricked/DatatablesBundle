@@ -5,3 +5,5 @@ composer.lock
 /Tests/Application/logs/
 /Tests/Application/var/app.db
 /Tests/assets/js/Datatable/*
+.phpunit.result.cache
+var/cache/

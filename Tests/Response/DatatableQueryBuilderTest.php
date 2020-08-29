@@ -11,13 +11,14 @@
 
 namespace Sg\DatatablesBundle\Tests\Response;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sg\DatatablesBundle\Datatable\Ajax;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
@@ -28,6 +29,9 @@ use Sg\DatatablesBundle\Response\DatatableQueryBuilder;
 
 class DatatableQueryBuilderTest extends TestCase
 {
+
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|EntityManagerInterface */
     private $entityManager;
 
@@ -64,7 +68,7 @@ class DatatableQueryBuilderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
         $this->classMetadataFactory = $this->prophesize(ClassMetadataFactory::class);
@@ -100,6 +104,7 @@ class DatatableQueryBuilderTest extends TestCase
     /**
      * @param string $entityName
      * @param string $shortName
+     *
      * @return DatatableQueryBuilder
      */
     private function getDataTableQueryBuilder($entityName, $shortName)

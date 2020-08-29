@@ -34,11 +34,11 @@ class GenerateDatatableJavascriptsCommandTest extends KernelTestCase
         );
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Successfully generated javascript files for 1 datatable(s)', $output);
-        $postDatatableFileUri = $kernel->getRootDir().'/../../'.$outputDir.'/post_datatable.js';
+        $this->assertStringContainsString('Successfully generated javascript files for 1 datatable(s)', $output);
+        $postDatatableFileUri = "{$kernel->getProjectDir()}/{$outputDir}/post_datatable.js";
         $this->assertFileExists($postDatatableFileUri);
         $postDatatableFileData = \file_get_contents($postDatatableFileUri);
-        $this->assertContains('"#post_datatable-language"', $postDatatableFileData);
+        $this->assertStringContainsString('"#post_datatable-language"', $postDatatableFileData);
     }
 
 }

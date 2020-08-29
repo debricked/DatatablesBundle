@@ -8,6 +8,7 @@ use Sg\DatatablesBundle\Twig\DatatableTwigExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
 
 class DatatableTwigExtensionTest extends KernelTestCase
 {
@@ -28,11 +29,11 @@ class DatatableTwigExtensionTest extends KernelTestCase
     private $requestStack;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $container = $this->bootKernel()->getContainer();
@@ -49,12 +50,12 @@ class DatatableTwigExtensionTest extends KernelTestCase
         $this->postDatatable->buildDatatable();
         /* @noinspection PhpUnhandledExceptionInspection */
         $renderedContent = $this->datatableTwigExtension->datatablesRenderJsValues($this->twig, $this->postDatatable);
-        $this->assertContains('{"searchCols":[null,null,null]}', $renderedContent);
-        $this->assertContains(
+        $this->assertStringContainsString('{"searchCols":[null,null,null]}', $renderedContent);
+        $this->assertStringContainsString(
             '{"serverSide":true,"pipeline":0,"ajax":{"url":"\/en\/post\/results","type":"GET","pages":0}}',
             $renderedContent
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '{"columns":[{"title":"Id","searchable":true,"visible":true,"orderable":true,"data":"id"},{"title":"Title","searchable":true,"visible":true,"orderable":true,"data":"title"},{"title":"datatables.actions.title","searchable":false,"visible":true,"orderable":false,"data":2}]}',
             $renderedContent
         );
@@ -72,17 +73,17 @@ class DatatableTwigExtensionTest extends KernelTestCase
             $this->twig,
             $this->postDatatable
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '{"serverSide":true,"pipeline":1,"ajax":{"url":"\/en\/post\/results","type":"GET","pages":1}}',
             $modifiedRenderedContent
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '{"dom":"\u003C\u0027row\u0027\u003C\u0027col-sm-6\u0027l\u003E\u003C\u0027col-sm-6\u0027f\u003E\u003E\u003C\u0027row\u0027\u003C\u0027col-sm-12\u0027tr\u003E\u003E\u003C\u0027row\u0027\u003C\u0027col-sm-5\u0027i\u003E\u003C\u0027col-sm-7\u0027p\u003E\u003E","lengthMenu":[10,25,50,100],"order":[[0,"asc"]],"individualFiltering":true}',
             $modifiedRenderedContent
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         $this->datatableTwigExtension = null;

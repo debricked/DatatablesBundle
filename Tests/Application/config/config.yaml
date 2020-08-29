@@ -10,8 +10,6 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yaml"
         strict_requirements: ~
-    templating:
-        engines: twig
 
 doctrine:
     dbal:

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class GenerateDatatableJavascriptsCommand extends Command
 {
@@ -26,9 +26,9 @@ class GenerateDatatableJavascriptsCommand extends Command
     private $datatables;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $renderingEngine;
+    private $twig;
 
     /**
      * @var string
@@ -50,12 +50,12 @@ class GenerateDatatableJavascriptsCommand extends Command
     public function __construct(
         ?string $name = null,
         iterable $datatables,
-        EngineInterface $renderingEngine,
+        Environment $twig,
         string $projectDir
     ) {
         parent::__construct($name);
         $this->datatables = $datatables;
-        $this->renderingEngine = $renderingEngine;
+        $this->twig = $twig;
         $this->projectDir = $projectDir;
     }
 
@@ -70,36 +70,36 @@ class GenerateDatatableJavascriptsCommand extends Command
         $filesystem = new Filesystem();
 
         foreach ($this->datatables as $datatable) {
-                try {
-                    $datatableJavascript = $this->renderingEngine->render(
-                        'SgDatatablesBundle:datatable:datatable_js.js.twig',
-                        [
-                            'sg_datatables_view' => $datatable,
-                        ]
-                    );
-                } catch (\RuntimeException $e) {
-                    $output->writeln('<error>Failed to render datatable "'.$datatable->getName().'"</error>');
+            try {
+                $datatableJavascript = $this->twig->render(
+                    '@SgDatatables/datatable/datatable_js.js.twig',
+                    [
+                        'sg_datatables_view' => $datatable,
+                    ]
+                );
+            } catch (\RuntimeException $e) {
+                $output->writeln('<error>Failed to render datatable "'.$datatable->getName().'"</error>');
 
-                    return 1;
+                return 1;
+            }
+            try {
+                $filename = $this->projectDir.'/'.$input->getArgument(
+                        static::ARGUMENT_OUTPUT
+                    ).'/'.$datatable->getName().'.js';
+                if ($filesystem->exists($filename) === true) {
+                    $filesystem->remove($filename);
                 }
-                try {
-                    $filename = $this->projectDir.'/'.$input->getArgument(
-                            static::ARGUMENT_OUTPUT
-                        ).'/'.$datatable->getName().'.js';
-                    if ($filesystem->exists($filename) === true) {
-                        $filesystem->remove($filename);
-                    }
-                    $filesystem->dumpFile(
-                        $filename,
-                        $datatableJavascript
-                    );
-                } catch (IOException $exception) {
-                    $output->writeln(
-                        '<error>Failed to save datatable"'.$datatable->getName().'"\'s javascript</error>'
-                    );
+                $filesystem->dumpFile(
+                    $filename,
+                    $datatableJavascript
+                );
+            } catch (IOException $exception) {
+                $output->writeln(
+                    '<error>Failed to save datatable"'.$datatable->getName().'"\'s javascript</error>'
+                );
 
-                    return 2;
-                }
+                return 2;
+            }
         }
 
         $output->writeln(

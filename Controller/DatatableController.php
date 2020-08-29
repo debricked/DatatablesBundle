@@ -11,24 +11,23 @@
 
 namespace Sg\DatatablesBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Doctrine\DBAL\Types\Type;
-use Exception;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class DatatableController
  *
  * @package Sg\DatatablesBundle\Controller
  */
-class DatatableController extends Controller
+class DatatableController extends AbstractController
 {
     //-------------------------------------------------
     // Actions
@@ -67,7 +66,6 @@ class DatatableController extends Controller
             $entity = $this->getEntityByPk($entityClassName, $pk);
 
             /** @var PropertyAccessor $accessor */
-            /** @noinspection PhpUndefinedMethodInspection */
             $accessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableMagicCall()
                 ->getPropertyAccessor();
@@ -125,28 +123,31 @@ class DatatableController extends Controller
     private function normalizeValue($originalTypeOfField, $value)
     {
         switch ($originalTypeOfField) {
-            case Type::DATETIME:
+            case Types::DATETIMETZ_MUTABLE:
+            case Types::DATETIME_MUTABLE:
                 $value = new DateTime($value);
                 break;
-            case Type::BOOLEAN:
+            case Types::BOOLEAN:
                 $value = $this->strToBool($value);
                 break;
-            case Type::TEXT:
-            case Type::STRING:
+            case Types::TEXT:
+            case Types::STRING:
                 break;
-            case Type::SMALLINT:
-            case Type::INTEGER:
+            case Types::SMALLINT:
+            case Types::INTEGER:
                 $value = (int) $value;
                 break;
-            case Type::BIGINT:
+            case Types::BIGINT:
                 $value = (string) $value;
                 break;
-            case Type::FLOAT:
-            case Type::DECIMAL:
+            case Types::FLOAT:
+            case Types::DECIMAL:
                 $value = (float) $value;
                 break;
             default:
-                throw new Exception("DatatableController::prepareValue(): The field type {$originalTypeOfField} is not editable.");
+                throw new Exception(
+                    "DatatableController::prepareValue(): The field type {$originalTypeOfField} is not editable."
+                );
         }
 
         return $value;
@@ -170,10 +171,14 @@ class DatatableController extends Controller
 
         if ($str === 'true' || $str === '1') {
             return true;
-        } elseif ($str === 'false' || $str === '0') {
+        }
+        elseif ($str === 'false' || $str === '0') {
             return false;
-        } else {
-            throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
+        }
+        else {
+            throw new Exception(
+                'DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".'
+            );
         }
     }
 }

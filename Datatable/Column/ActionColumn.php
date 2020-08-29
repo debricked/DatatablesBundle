@@ -49,7 +49,7 @@ class ActionColumn extends AbstractColumn
      */
     public function dqlConstraint($dql)
     {
-        return null === $dql ? true : false;
+        return null === $dql;
     }
 
     /**

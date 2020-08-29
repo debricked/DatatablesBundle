@@ -65,7 +65,7 @@ class PostDatatable extends AbstractDatatable
                         [
                             'icon' => 'fa fa-trash-o',
                             'render_if' => function () {
-                                return $this->authorizationChecker->isGranted(Role::DEFAULT_ROLE_COMPANY_ADMIN);
+                                return $this->authorizationChecker->isGranted('ROLE_COMPANY_ADMIN');
                             },
                             'label' => 'Delete',
                             'route' => 'app.datatable.post',

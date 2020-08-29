@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="./Tests/bootstrap.php" colors="true">
-
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./Tests/bootstrap.php" colors="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory>./</directory>
+        </include>
+        <exclude>
+            <directory>./Resources</directory>
+            <directory>./Tests</directory>
+            <directory>./vendor</directory>
+        </exclude>
+    </coverage>
     <testsuites>
-        <testsuite name="SgDatatables Test Suite 1.0">
+        <testsuite name="SgDatatables Test Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
-
     <php>
         <server name="KERNEL_CLASS" value="Sg\DatatablesBundle\Tests\Application\Kernel"/>
     </php>
-
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
 </phpunit>

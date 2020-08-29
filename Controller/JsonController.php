@@ -7,12 +7,13 @@ use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Extension\Button;
 use Sg\DatatablesBundle\Datatable\Extension\Buttons;
 use Sg\DatatablesBundle\Datatable\Extension\Responsive;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 
-class JsonController extends Controller
+class JsonController extends AbstractController
 {
 
     /**
@@ -21,11 +22,11 @@ class JsonController extends Controller
     private $assetsHelper;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $engine;
 
-    public function __construct(Packages $assetsHelper, \Twig_Environment $engine)
+    public function __construct(Packages $assetsHelper, Environment $engine)
     {
         $this->assetsHelper = $assetsHelper;
         $this->engine = $engine;

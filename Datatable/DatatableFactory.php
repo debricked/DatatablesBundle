@@ -11,13 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Twig_Environment;
 use Exception;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Class DatatableFactory
@@ -64,7 +64,7 @@ class DatatableFactory
     /**
      * The Twig Environment.
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -80,7 +80,7 @@ class DatatableFactory
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
+     * @param Environment                   $twig
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -88,7 +88,7 @@ class DatatableFactory
         TranslatorInterface $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig
+        Environment $twig
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
@@ -130,8 +130,11 @@ class DatatableFactory
                 $this->em,
                 $this->twig
             );
-        } else {
-            throw new Exception("DatatableFactory::create(): The class $class should implement the DatatableInterface.");
+        }
+        else {
+            throw new Exception(
+                "DatatableFactory::create(): The class $class should implement the DatatableInterface."
+            );
         }
     }
 }

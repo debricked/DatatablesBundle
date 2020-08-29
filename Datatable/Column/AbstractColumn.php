@@ -18,7 +18,7 @@ use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * Class AbstractColumn
@@ -245,7 +245,7 @@ abstract class AbstractColumn implements ColumnInterface
      * The Twig Environment to render Twig templates in Column rowes.
      * Is set in the ColumnBuilder.
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -961,7 +961,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get Twig.
      *
-     * @return Twig_Environment
+     * @return Environment
      */
     public function getTwig()
     {
@@ -971,11 +971,11 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set Twig.
      *
-     * @param Twig_Environment $twig
+     * @param Environment $twig
      *
      * @return $this
      */
-    public function setTwig(Twig_Environment $twig)
+    public function setTwig(Environment $twig)
     {
         $this->twig = $twig;
 
