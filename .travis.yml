@@ -3,13 +3,11 @@ language: php
 php:
   - 7.3
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.composer/cache
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - php: 7.3
